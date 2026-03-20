@@ -1,66 +1,77 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 using System.Collections;
 
 public class TerminalUI : MonoBehaviour
 {
-    [Header("UI Text References")]
-    public TMP_Text outputDisplay;
-    public TMP_Text currentInputDisplay;
-    public TMP_Text objectiveDisplay;
-    public TMP_Text instructionDisplay;
+    public TextMeshProUGUI outputField;
+    public TextMeshProUGUI instructionsField;
+    public TextMeshProUGUI objectiveField;
+    public TextMeshProUGUI inputDisplayField;
+    public TextMeshProUGUI transitionDayText;
+    public Image blackOverlay;
 
-    [Header("Transition References")]
-    public CanvasGroup fadeGroup;
-    public TMP_Text transitionDayText;
+    [Header("Attachment Panel")]
+    public GameObject attachmentPanel;
+    public Image photoDisplay;
 
-    public void SetOutput(string text) => outputDisplay.text = text;
-    public void SetInput(string text) => currentInputDisplay.text = "> " + text + "_";
-    public void SetObjective(int pending) => objectiveDisplay.text = "FILES: " + pending;
-    public void SetInstructions(string text) => instructionDisplay.text = "INSTRUCTION: " + text;
+    public void SetOutput(string text) => outputField.text = text;
+    public void SetInstructions(string text)
+    {
+        if (instructionsField != null) instructionsField.text = text;
+    }
+    public void SetInput(string text)
+    {
+        if (inputDisplayField != null) inputDisplayField.text = "> " + text;
+    }
+    public void SetObjective(int count) => objectiveField.text = "PENDING: " + count;
+
+    public IEnumerator ShowTransitionText(string text, float duration)
+    {
+        transitionDayText.text = text;
+        float elapsed = 0;
+        while (elapsed < 1f)
+        {
+            transitionDayText.color = new Color(1, 1, 1, elapsed);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        yield return new WaitForSeconds(duration);
+        transitionDayText.color = new Color(1, 1, 1, 0);
+    }
 
     public IEnumerator FadeInBlack(float duration)
     {
-        float t = 0;
-        while (t < 1) { t += Time.deltaTime / duration; fadeGroup.alpha = t; yield return null; }
-        fadeGroup.alpha = 1;
+        float alpha = 0;
+        while (alpha < 1)
+        {
+            // Ang formula: $alpha += \frac{Time.deltaTime}{duration}$
+            alpha += Time.deltaTime / duration;
+            blackOverlay.color = new Color(0, 0, 0, alpha);
+            yield return null;
+        }
     }
 
     public IEnumerator FadeOutBlack(float duration)
     {
-        float t = 1;
-        while (t > 0) { t -= Time.deltaTime / duration; fadeGroup.alpha = t; yield return null; }
-        fadeGroup.alpha = 0;
+        float alpha = 1;
+        while (alpha > 0)
+        {
+            // Ang formula: $alpha -= \frac{Time.deltaTime}{duration}$
+            alpha -= Time.deltaTime / duration;
+            blackOverlay.color = new Color(0, 0, 0, alpha);
+            yield return null;
+        }
     }
 
-    public IEnumerator ShowTransitionText(string content, float duration)
+    public void ShowPhoto(Sprite photo)
     {
-        if (transitionDayText == null) yield break;
-
-        // 1. Setup the text
-        transitionDayText.text = content;
-        transitionDayText.color = new Color(1, 1, 1, 0); // Force White & Transparent
-
-        // 2. Fade In
-        float t = 0;
-        while (t < 1f)
-        {
-            t += Time.deltaTime / duration;
-            transitionDayText.color = new Color(1, 1, 1, t);
-            yield return null;
-        }
-        transitionDayText.color = new Color(1, 1, 1, 1); // Ensure fully solid
-
-        // 3. Hold
-        yield return new WaitForSeconds(2.5f);
-
-        // 4. Fade Out
-        while (t > 0f)
-        {
-            t -= Time.deltaTime / duration;
-            transitionDayText.color = new Color(1, 1, 1, t);
-            yield return null;
-        }
-        transitionDayText.color = new Color(1, 1, 1, 0); // Ensure fully hidden
+        if (photo == null) return;
+        attachmentPanel.SetActive(true);
+        photoDisplay.sprite = photo;
     }
+
+    public void HideAttachment() => attachmentPanel.SetActive(false);
+
 }
