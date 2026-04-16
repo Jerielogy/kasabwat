@@ -3,12 +3,44 @@
   "WorkspaceRootPath": "C:\\Users\\paulj\\KASABWAT\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|c:\\users\\paulj\\kasabwat\\assets\\_scripts\\scanline.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\scanline.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\buttonhoverscale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\buttonhoverscale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\creepytextpopup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\creepytextpopup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\kasabwatmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\kasabwatmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\titlejitter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\titlejitter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\titletypewriter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\titletypewriter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\mainmenucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\mainmenucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\kasabwatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\kasabwatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|c:\\users\\paulj\\kasabwat\\assets\\_scripts\\terminalaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\terminalaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\terminalaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\terminalinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\terminalinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\terminalui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,14 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\emaildatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\emaildatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\kasabwatmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\kasabwatmovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|C:\\Users\\paulj\\KASABWAT\\assets\\_scripts\\terminalinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{21CB7BDE-0230-F55D-2E24-D5C9868017E9}|Assembly-CSharp.csproj|solutionrelative:assets\\_scripts\\terminalinput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,79 +58,150 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ButtonHoverScale.cs",
+              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\ButtonHoverScale.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\ButtonHoverScale.cs",
+              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\ButtonHoverScale.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\ButtonHoverScale.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAYwBUAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T06:30:49.343Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CreepyTextPopUp.cs",
+              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\CreepyTextPopUp.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\CreepyTextPopUp.cs",
+              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\CreepyTextPopUp.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\CreepyTextPopUp.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T06:22:39.82Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "TitleJitter.cs",
+              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TitleJitter.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\TitleJitter.cs",
+              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TitleJitter.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\TitleJitter.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T06:18:48.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ScanLine.cs",
+              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\ScanLine.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\ScanLine.cs",
+              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\ScanLine.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\ScanLine.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T06:17:07.939Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "TitleTypewriter.cs",
+              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TitleTypewriter.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\TitleTypewriter.cs",
+              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TitleTypewriter.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\TitleTypewriter.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAgwDMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T05:48:40.88Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MainMenuController.cs",
+              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\MainMenuController.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\MainMenuController.cs",
+              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\MainMenuController.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\MainMenuController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-16T05:41:56.534Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "KasabwatMovement.cs",
               "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\KasabwatMovement.cs",
               "RelativeDocumentMoniker": "Assets\\_Scripts\\KasabwatMovement.cs",
               "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\KasabwatMovement.cs",
               "RelativeToolTip": "Assets\\_Scripts\\KasabwatMovement.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAvwBUAAAA1AAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA1wDMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-16T00:28:04.763Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "TerminalInput.cs",
-              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalInput.cs",
-              "RelativeDocumentMoniker": "Assets\\_Scripts\\TerminalInput.cs",
-              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalInput.cs",
-              "RelativeToolTip": "Assets\\_Scripts\\TerminalInput.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T04:01:22.66Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "KasabwatController.cs",
               "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\KasabwatController.cs",
               "RelativeDocumentMoniker": "Assets\\_Scripts\\KasabwatController.cs",
               "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\KasabwatController.cs",
               "RelativeToolTip": "Assets\\_Scripts\\KasabwatController.cs",
-              "ViewState": "AgIAAJAAAAAAAAAAAAAqwLMAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAswI8AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T04:01:03.754Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T04:01:03.754Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 9,
+              "Title": "TerminalInput.cs",
+              "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalInput.cs",
+              "RelativeDocumentMoniker": "Assets\\_Scripts\\TerminalInput.cs",
+              "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalInput.cs",
+              "RelativeToolTip": "Assets\\_Scripts\\TerminalInput.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAgwE0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-07T04:01:22.66Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "TerminalAudio.cs",
               "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalAudio.cs",
               "RelativeDocumentMoniker": "Assets\\_Scripts\\TerminalAudio.cs",
               "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalAudio.cs",
               "RelativeToolTip": "Assets\\_Scripts\\TerminalAudio.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T04:00:46.74Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T04:00:46.74Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 10,
               "Title": "TerminalUI.cs",
               "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalUI.cs",
               "RelativeDocumentMoniker": "Assets\\_Scripts\\TerminalUI.cs",
               "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\TerminalUI.cs",
               "RelativeToolTip": "Assets\\_Scripts\\TerminalUI.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAqwEMAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAgwDsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-07T04:00:27.928Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 11,
               "Title": "EmailDatabase.cs",
               "DocumentMoniker": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\EmailDatabase.cs",
               "RelativeDocumentMoniker": "Assets\\_Scripts\\EmailDatabase.cs",
               "ToolTip": "C:\\Users\\paulj\\KASABWAT\\Assets\\_Scripts\\EmailDatabase.cs",
               "RelativeToolTip": "Assets\\_Scripts\\EmailDatabase.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwDwAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAgwDEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-07T04:00:04.323Z"
             }
