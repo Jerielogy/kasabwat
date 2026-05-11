@@ -1,6 +1,7 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum GameState { Prologue, Awakening, Login_User, Login_Pass, Intro, Mailbox, Viewing, Evaluation, PhoneCall, StoryCall, Intrusion, Day3_Breach }
 
@@ -18,7 +19,9 @@ public class KasabwatController : MonoBehaviour
     private List<Email> inbox;
     private int currentDay = 1, errors = 0, processedToday = 0, selectedEmailIndex = -1;
     private AudioClip pendingEvalClip;
+    public SubtitleManager subManager;
 
+    private bool isPhoneCallActive = false;
     void Start()
     {
         ui = GetComponent<TerminalUI>();
@@ -166,6 +169,8 @@ public class KasabwatController : MonoBehaviour
 
     public void AnswerPhone()
     {
+        if (isPhoneCallActive) return;
+
         if (currentState == GameState.PhoneCall)
         {
             audioCtrl.SetRingtone(false);
@@ -178,26 +183,44 @@ public class KasabwatController : MonoBehaviour
 
     IEnumerator Day1IntroCallSequence()
     {
+        isPhoneCallActive = true; // LOCK
+        string dialogue = "Alvin, Friend: Hey, Paul! You actually made it. Welcome to the 'inner circle.' Look, the terminal looks like a dinosaur, but it’s the most important seat in the entire Municipality. Just keep your head down and clear the backlog. And hey... don't be like Reyes, okay? He started asking questions he shouldn't have, and now nobody knows where he went. Just do it for your Mom. I’ll check on you later.";
+        float length = audioCtrl.GetLength(audioCtrl.friendDay1);
+
+        subManager.DisplaySubtitle(dialogue, length);
         audioCtrl.PlayClip(audioCtrl.friendDay1);
         yield return new WaitForSeconds(audioCtrl.GetLength(audioCtrl.friendDay1));
         ui.SetOutput("SYSTEM READY.\n\nPRESS ANY KEY TO LOGIN");
         currentState = GameState.Awakening;
         UpdateUI();
+        isPhoneCallActive = false; // UNLOCK
     }
 
     IEnumerator Day2PhoneCallSequence()
     {
+        isPhoneCallActive = true; // LOCK
         audioCtrl.PlayClip(audioCtrl.friendDay2);
         yield return new WaitForSeconds(audioCtrl.GetLength(audioCtrl.friendDay2));
         currentState = GameState.Intro;
         UpdateUI();
+        isPhoneCallActive = false; // UNLOCK
     }
 
     IEnumerator ExecuteEvaluationCall()
     {
+        isPhoneCallActive = true; // LOCK
+        string dialogue = (errors > 0)
+        ? "MAYOR: I’m disappointed, Paul. I see files left in the 'Agos' directory. These... 'discrepancies'... they make the office look bad. And when the office looks bad, I have to cut costs. I'd hate for your mother’s hospital fund to be the first thing we cut. Do better tomorrow, Paul. For her sake."
+        : "MAYOR: Paul... I’m looking at the logs. Perfection. That’s what I like about you—you understand how this world works. Your mother is resting comfortably at my private hospital. The surgeons are the best in the province. Keep this up, and your family will never have to worry about a single cent again. Get some rest, son. Tomorrow is a big day for our town.";
+
+        float length = audioCtrl.GetLength(pendingEvalClip);
+
+        subManager.DisplaySubtitle(dialogue, length); 
+        
         audioCtrl.PlayClip(pendingEvalClip);
-        yield return new WaitForSeconds(audioCtrl.GetLength(pendingEvalClip));
+        yield return new WaitForSeconds(length);
         pendingEvalClip = null;
+        isPhoneCallActive = false; // UNLOCK
         if (currentDay == 1)
         {
             yield return ui.FadeInBlack(2f);
@@ -246,8 +269,8 @@ public class KasabwatController : MonoBehaviour
         isReadingNote = show;
         ui.stickyNotePanel.SetActive(show);
         if (audioCtrl) audioCtrl.PlayInteractSound();
-        Cursor.lockState = show ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = show;
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
         if (show) ui.ShowHoverPrompt(false);
     }
 
@@ -260,9 +283,20 @@ public class KasabwatController : MonoBehaviour
 
     void TryLogout()
     {
-        foreach (var e in inbox) if (!e.isProcessed) return;
+        // 1. Check if any emails are still unprocessed
+        foreach (var e in inbox)
+        {
+            if (!e.isProcessed)
+            {
+                ui.SetOutput("ACCESS DENIED: PENDING FILES REMAINING.");
+                return;
+            }
+        }
+
         currentState = GameState.Evaluation;
         UpdateUI();
+
+        TriggerEndOfDay();
     }
 
     int GetPendingCount()

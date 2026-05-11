@@ -30,34 +30,82 @@ public class HackerConversation : MonoBehaviour
 
     IEnumerator TypeHackerMessage(string message)
     {
-        isAwaitingInput = false;
+        isAwaitingInput = false; // LOCK INPUT while Reyes is typing
         hackerDisplayText.text = "";
-        foreach (char c in message.ToCharArray()) { hackerDisplayText.text += c; yield return new WaitForSeconds(0.03f); }
-        hackerDisplayText.text += "\n\n<color=yellow>/ask 1: " + conversationSteps[currentStep].option1 + "</color>\n<color=yellow>/ask 2: " + conversationSteps[currentStep].option2 + "</color>\n<color=yellow>/ask 3: " + conversationSteps[currentStep].option3 + "</color>";
-        isAwaitingInput = true;
+
+        // REYES TYPING...
+        foreach (char c in message.ToCharArray())
+        {
+            hackerDisplayText.text += c;
+            yield return new WaitForSeconds(0.03f);
+        }
+
+        // Display Options
+        hackerDisplayText.text += "\n\n<color=yellow>/ask 1: " + conversationSteps[currentStep].option1 + "</color>";
+        hackerDisplayText.text += "\n<color=yellow>/ask 2: " + conversationSteps[currentStep].option2 + "</color>";
+        hackerDisplayText.text += "\n<color=yellow>/ask 3: " + conversationSteps[currentStep].option3 + "</color>";
+
+        isAwaitingInput = true; // UNLOCK INPUT
     }
 
     public void ReceiveInput(string input)
     {
+        // 1. Check if we are even allowed to type (No spamming)
         if (!isAwaitingInput) return;
-        string response = "";
-        if (input == "/ask 1") response = conversationSteps[currentStep].response1;
-        else if (input == "/ask 2") response = conversationSteps[currentStep].response2;
-        else if (input == "/ask 3") response = conversationSteps[currentStep].response3;
-        else return;
-        StartCoroutine(HandleResponse(response));
+
+        // 2. Clean the input (Case-insensitive)
+        string cmd = input.ToLower().Trim();
+        string chosenOptionText = "";
+        string responseText = "";
+
+        // 3. Logic for choosing the question
+        if (cmd == "/ask 1")
+        {
+            chosenOptionText = conversationSteps[currentStep].option1;
+            responseText = conversationSteps[currentStep].response1;
+        }
+        else if (cmd == "/ask 2")
+        {
+            chosenOptionText = conversationSteps[currentStep].option2;
+            responseText = conversationSteps[currentStep].response2;
+        }
+        else if (cmd == "/ask 3")
+        {
+            chosenOptionText = conversationSteps[currentStep].option3;
+            responseText = conversationSteps[currentStep].response3;
+        }
+        else return; // If they typed something else, ignore it.
+
+        // 4. Start the response sequence
+        StartCoroutine(HandleResponse(chosenOptionText, responseText));
     }
 
-    IEnumerator HandleResponse(string response)
+    IEnumerator HandleResponse(string playerQuestion, string hackerResponse)
     {
-        isAwaitingInput = false;
-        hackerDisplayText.text = "SYSTEM: ENCRYPTING RESPONSE...";
+        isAwaitingInput = false; // LOCK INPUT (Busy Flag)
+
+        // SHOW PAUL'S QUESTION (This fixes the "not displaying" issue)
+        hackerDisplayText.text = "PAUL: " + playerQuestion;
         yield return new WaitForSeconds(1f);
-        hackerDisplayText.text = "REYES: " + response;
+
+        // ENCRYPTION EFFECT
+        hackerDisplayText.text += "...";
+        yield return new WaitForSeconds(1.5f);
+
+        // SHOW REYES' RESPONSE
+        hackerDisplayText.text = "REYES: " + hackerResponse;
         yield return new WaitForSeconds(4f);
+
+        // Move to next step or end
         currentStep++;
-        if (currentStep < conversationSteps.Count) StartCoroutine(TypeHackerMessage(conversationSteps[currentStep].hackerStatement));
-        else EndBreach();
+        if (currentStep < conversationSteps.Count)
+        {
+            StartCoroutine(TypeHackerMessage(conversationSteps[currentStep].hackerStatement));
+        }
+        else
+        {
+            EndBreach();
+        }
     }
 
     void EndBreach()
