@@ -758,6 +758,7 @@ GameObject:
   - component: {fileID: 1775048565}
   - component: {fileID: 1775048564}
   - component: {fileID: 1775048566}
+  - component: {fileID: 1775048567}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -809,6 +810,29 @@ MonoBehaviour:
   typeSpeed: 0.15
   deleteSpeed: 0.1
   pauseTime: 2
+--- !u!114 &1775048567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775048563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0629ae1e5fbb53340b6010505988a1fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  officeSpeaker: {fileID: 0}
+  telephoneSource: {fileID: 0}
+  typingClip: {fileID: 8300000, guid: be5fe88e0165352468e671ee44eb77e1, type: 3}
+  interactClip: {fileID: 8300000, guid: f6323a0b367665441b37e3e9624dee1f, type: 3}
+  goodCall: {fileID: 0}
+  badCall: {fileID: 0}
+  friendDay1: {fileID: 0}
+  friendDay2: {fileID: 0}
+  Day2EndingCall: {fileID: 0}
+  IntrusionSFX: {fileID: 0}
+  ringtone: {fileID: 0}
 --- !u!1 &1803521384
 GameObject:
   m_ObjectHideFlags: 0

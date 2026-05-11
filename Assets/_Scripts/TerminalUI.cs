@@ -5,56 +5,82 @@ using System.Collections;
 
 public class TerminalUI : MonoBehaviour
 {
-    public TextMeshProUGUI outputField, instructionsField, objectiveField, inputDisplayField, transitionDayText;
-    public UnityEngine.UI.Image blackOverlay;
+    public TextMeshProUGUI outputField;
+    public TextMeshProUGUI instructionField;
+    public TextMeshProUGUI objectiveField;
 
-    [Header("Panels")]
+    // BACK TO NORMAL: Just a simple text display
+    public TextMeshProUGUI inputField;
+
+    public GameObject stickyNotePanel;
+    public GameObject hoverPrompt;
+    public TextMeshProUGUI hoverText;
+
+    public Image blackOverlay;
+    public TextMeshProUGUI transitionText;
+
     public GameObject attachmentPanel;
-    public UnityEngine.UI.Image photoDisplay;
-    public GameObject hoverPrompt, stickyNotePanel;
+    public Image photoDisplay;
+
+    // CLEAN START: No more listeners fighting your TerminalInput script
+    void Start()
+    {
+        if (inputField != null) inputField.text = "";
+    }
 
     public void SetOutput(string text) => outputField.text = text;
-    public void SetInstructions(string text) => instructionsField.text = text;
-    public void SetInput(string text) => inputDisplayField.text = "> " + text;
-    public void SetObjective(int count) => objectiveField.text = "PENDING: " + count;
+    public void SetInstructions(string text) => instructionField.text = text;
+    public void SetObjective(int count) => objectiveField.text = "PENDING FILES: " + count;
+
+    // THIS IS THE BRIDGE: TerminalInput calls this to show your typing
+    public void SetInput(string text)
+    {
+        if (inputField != null) inputField.text = text;
+    }
+
+    public void ShowPhoto(Sprite photo)
+    {
+        attachmentPanel.SetActive(true);
+        photoDisplay.sprite = photo;
+    }
+
+    public void HideAttachment() => attachmentPanel.SetActive(false);
+
+    public void ShowHoverPrompt(bool show, string message = "")
+    {
+        hoverPrompt.SetActive(show);
+        if (show && hoverText != null) hoverText.text = message;
+    }
 
     public IEnumerator ShowTransitionText(string text, float duration)
     {
-        transitionDayText.text = text;
-        transitionDayText.color = new Color(1, 1, 1, 0);
-        float elapsed = 0;
-        while (elapsed < 1f)
-        {
-            transitionDayText.color = new Color(1, 1, 1, elapsed);
-            elapsed += Time.deltaTime; yield return null;
-        }
+        transitionText.text = text;
+        transitionText.gameObject.SetActive(true);
         yield return new WaitForSeconds(duration);
-        float fadeOut = 1f;
-        while (fadeOut > 0f)
-        {
-            fadeOut -= Time.deltaTime;
-            transitionDayText.color = new Color(1, 1, 1, fadeOut); yield return null;
-        }
-    }
-
-    public IEnumerator FadeInBlack(float duration)
-    {
-        float a = 0;
-        while (a < 1) { a += Time.deltaTime / duration; blackOverlay.color = new Color(0, 0, 0, a); yield return null; }
+        transitionText.gameObject.SetActive(false);
     }
 
     public IEnumerator FadeOutBlack(float duration)
     {
-        float a = 1;
-        while (a > 0) { a -= Time.deltaTime / duration; blackOverlay.color = new Color(0, 0, 0, a); yield return null; }
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            blackOverlay.color = new Color(0, 0, 0, 1 - (elapsed / duration));
+            yield return null;
+        }
+        blackOverlay.color = new Color(0, 0, 0, 0);
     }
 
-    public void ShowPhoto(Sprite p) { if (p) { attachmentPanel.SetActive(true); photoDisplay.sprite = p; } }
-    public void HideAttachment() => attachmentPanel.SetActive(false);
-    public void ShowHoverPrompt(bool s, string m = "")
+    public IEnumerator FadeInBlack(float duration)
     {
-        hoverPrompt.SetActive(s);
-        TextMeshProUGUI t = hoverPrompt.GetComponentInChildren<TextMeshProUGUI>();
-        if (s && t != null) t.text = m;
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            blackOverlay.color = new Color(0, 0, 0, elapsed / duration);
+            yield return null;
+        }
+        blackOverlay.color = new Color(0, 0, 0, 1);
     }
 }

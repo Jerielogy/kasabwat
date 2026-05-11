@@ -26,6 +26,11 @@ public class TitleTypewriter : MonoBehaviour
             for (int i = 0; i <= fullText.Length; i++)
             {
                 titleText.text = fullText.Substring(0, i) + cursorChar;
+
+                // ADD THIS: Hanapin ang audio manager at patunugin
+                TerminalAudio menuAudio = FindFirstObjectByType<TerminalAudio>();
+                if (menuAudio != null) menuAudio.PlayTypingSound();
+
                 yield return new WaitForSeconds(typeSpeed);
             }
 

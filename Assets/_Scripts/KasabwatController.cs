@@ -9,6 +9,7 @@ public class KasabwatController : MonoBehaviour
     public GameState currentState;
     public Light officeLight;
     public KasabwatMovement movement;
+    public HackerConversation hackerComp;
     public bool isReadingNote = false;
 
     private TerminalUI ui;
@@ -20,40 +21,49 @@ public class KasabwatController : MonoBehaviour
 
     void Start()
     {
-        ui = GetComponent<TerminalUI>(); db = GetComponent<EmailDatabase>();
-        audioCtrl = GetComponent<TerminalAudio>(); LoadDay(1);
+        ui = GetComponent<TerminalUI>();
+        db = GetComponent<EmailDatabase>();
+        audioCtrl = GetComponent<TerminalAudio>();
+        hackerComp = FindFirstObjectByType<HackerConversation>();
+        LoadDay(1);
         StartCoroutine(StartGameSequence());
     }
 
     public void LoadDay(int day)
     {
-        currentDay = day; errors = 0; processedToday = 0;
-        inbox = (day == 3) ? new List<Email>() : db.GetDayContent(day);
-        if (day == 3 && officeLight) officeLight.intensity = 0.1f;
+        currentDay = day;
+        errors = 0;
+        processedToday = 0;
+        inbox = db.GetDayContent(day);
         ui.SetObjective(inbox.Count);
+        if (movement) movement.enabled = false;
+        if (day == 3 && officeLight) StartCoroutine(Day3FlickerLight());
     }
 
-    // FIXED: Day 1 Intro now waits for telephone interaction
     IEnumerator StartGameSequence()
     {
         currentState = GameState.Prologue;
         yield return ui.ShowTransitionText("DAY 1: THE COMPLIANCE", 1.5f);
         yield return ui.FadeOutBlack(1.5f);
-
         currentState = GameState.PhoneCall;
-        audioCtrl.SetRingtone(true); // START RINGTONE
-
+        audioCtrl.SetRingtone(true);
         ui.SetOutput("(Telephone ringing... Click the phone to answer.)");
         ui.SetInstructions("INCOMING: PARE");
-        yield break;
     }
 
     public void HandleInput(string input)
     {
-        if (currentState == GameState.Awakening) { currentState = GameState.Login_User; UpdateUI(); return; }
         string cmd = input.ToLower().Trim();
-        if (currentState == GameState.Login_User && cmd == "admin") { currentState = GameState.Login_Pass; UpdateUI(); }
-        else if (currentState == GameState.Login_Pass && cmd == "password") { currentState = GameState.Intro; UpdateUI(); }
+        if (currentState == GameState.Intrusion)
+        {
+            if (hackerComp != null) hackerComp.ReceiveInput(cmd);
+            return;
+        }
+
+        if (currentState == GameState.Awakening) { currentState = GameState.Login_User; UpdateUI(); return; }
+
+        if (currentState == GameState.Login_User && cmd == "/admin") { currentState = GameState.Login_Pass; UpdateUI(); }
+        else if (currentState == GameState.Login_Pass && cmd == "/password") { currentState = GameState.Intro; UpdateUI(); }
         else if (currentState == GameState.Intro) { currentState = GameState.Mailbox; UpdateUI(); }
         else if (currentState == GameState.Mailbox)
         {
@@ -73,34 +83,53 @@ public class KasabwatController : MonoBehaviour
     {
         if (idx >= 0 && idx < inbox.Count && !inbox[idx].isProcessed)
         {
-            selectedEmailIndex = idx; currentState = GameState.Viewing; UpdateUI();
-            string c = "SUBJECT: " + inbox[idx].subject + "\n----------------\n" + inbox[idx].body;
-            if (!string.IsNullOrEmpty(inbox[idx].attachmentName)) c += "\n\n[ATTACHMENT: " + inbox[idx].attachmentName + "]";
-            ui.SetOutput(c);
+            selectedEmailIndex = idx;
+            currentState = GameState.Viewing;
+            UpdateUI();
+            string content = "SUBJECT: " + inbox[idx].subject + "\n----------------\n" + inbox[idx].body;
+            if (!string.IsNullOrEmpty(inbox[idx].attachmentName)) content += "\n\n[ATTACHMENT: " + inbox[idx].attachmentName + "]";
+            ui.SetOutput(content);
         }
     }
 
-    void ProcessEmail(bool del)
+    void ProcessEmail(bool deleteChoice)
     {
-        inbox[selectedEmailIndex].isProcessed = true; processedToday++;
-        if (inbox[selectedEmailIndex].isSensitive != del) errors++;
-        if (currentDay == 2 && processedToday == 5) StartCoroutine(IntrusionSequence());
-        else { ui.SetOutput("FILE PROCESSED.\n\nTYPE /close TO RETURN."); ui.SetObjective(GetPendingCount()); }
+        inbox[selectedEmailIndex].isProcessed = true;
+        processedToday++;
+        if (inbox[selectedEmailIndex].isSensitive != deleteChoice) errors++;
+
+        if (currentDay == 2 && processedToday == 8) StartCoroutine(IntrusionSequence());
+        else if (currentDay == 2 && processedToday == 15)
+        {
+            currentState = GameState.Intrusion;
+            if (hackerComp) hackerComp.StartBreach();
+        }
+        else if (currentDay == 3 && processedToday == 20) StartCoroutine(Day3BreachSequence());
+        else
+        {
+            ui.SetOutput("FILE PROCESSED.\n\nTYPE /close TO RETURN.");
+            ui.SetObjective(GetPendingCount());
+        }
     }
 
-    public void ToggleNote(bool show)
+    IEnumerator IntrusionSequence()
     {
-        isReadingNote = show; ui.stickyNotePanel.SetActive(show);
-        Cursor.lockState = show ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = show;
-        if (show) ui.ShowHoverPrompt(false);
-    }
-
-    void ShowInbox()
-    {
-        string list = "INBOX - DAY " + currentDay + "\n----------------\n";
-        for (int i = 0; i < inbox.Count; i++) list += (i + 1) + ". " + (inbox[i].isProcessed ? "[X] " : "[ ] ") + inbox[i].subject + "\n";
-        ui.SetOutput(list);
+        currentState = GameState.Intrusion;
+        ui.HideAttachment();
+        audioCtrl.PlayClip(audioCtrl.IntrusionSFX);
+        float elapsed = 0;
+        while (elapsed < 3f)
+        {
+            ui.outputField.gameObject.transform.parent.gameObject.SetActive(Random.value > 0.5f);
+            ui.SetOutput(Random.value > 0.5f ? "SYSTEM COMPROMISED" : "INTRUDER ALERT");
+            ui.outputField.color = Color.red;
+            yield return new WaitForSeconds(Random.Range(0.05f, 0.15f));
+            elapsed += 0.1f;
+        }
+        ui.outputField.gameObject.transform.parent.gameObject.SetActive(true);
+        ui.outputField.color = Color.white;
+        currentState = GameState.Mailbox;
+        UpdateUI();
     }
 
     public void UpdateUI()
@@ -110,23 +139,17 @@ public class KasabwatController : MonoBehaviour
             case GameState.Login_User: ui.SetInstructions("ENTER USERNAME (read sticky note)"); break;
             case GameState.Login_Pass: ui.SetInstructions("ENTER PASSWORD (read sticky note)"); break;
             case GameState.Intro: ui.SetInstructions("PRESS ENTER TO START"); break;
-            case GameState.Mailbox: ShowInbox(); ui.SetInstructions("TYPE: /view [number]  |  /logout"); break;
-            case GameState.Viewing: ui.SetInstructions("TYPE: /keep  |  /delete  |  /open  |  /close"); break;
+            case GameState.Mailbox: ShowInbox(); ui.SetInstructions("TYPE: /view [number] | /logout"); break;
+            case GameState.Viewing: ui.SetInstructions("TYPE: /keep | /delete | /open | /close"); break;
             case GameState.Evaluation: ui.SetInstructions("STATION OFFLINE."); break;
         }
     }
 
-    IEnumerator IntrusionSequence()
+    void ShowInbox()
     {
-        currentState = GameState.Intrusion; ui.HideAttachment(); audioCtrl.PlayClip(audioCtrl.IntrusionSFX);
-        float e = 0; while (e < 6f)
-        {
-            ui.outputField.gameObject.transform.parent.gameObject.SetActive(Random.value > 0.5f);
-            ui.SetOutput(Random.value > 0.5f ? "SYSTEM COMPROMISED" : "INTRUDER ALERT");
-            ui.outputField.color = Color.red; yield return new WaitForSeconds(Random.Range(0.05f, 0.2f)); e += 0.1f;
-        }
-        ui.outputField.gameObject.transform.parent.gameObject.SetActive(true); ui.outputField.color = Color.white;
-        ui.SetOutput("SYSTEM RESTORED...\n\nTYPE /close TO RETURN."); currentState = GameState.Viewing;
+        string list = "INBOX - DAY " + currentDay + "\n----------------\n";
+        for (int i = 0; i < inbox.Count; i++) list += (i + 1) + ". " + (inbox[i].isProcessed ? "[X] " : "[ ] ") + inbox[i].subject + "\n";
+        ui.SetOutput(list);
     }
 
     public void TriggerEndOfDay() => StartCoroutine(PhoneCallSequence());
@@ -135,21 +158,18 @@ public class KasabwatController : MonoBehaviour
     {
         currentState = GameState.PhoneCall;
         pendingEvalClip = (errors > 0) ? audioCtrl.badCall : audioCtrl.goodCall;
-
-        audioCtrl.SetRingtone(true); // START RINGTONE para sa evaluation
-
+        audioCtrl.SetRingtone(true);
         ui.SetOutput("SYSTEM SHUTDOWN.\n\n(Incoming call... Click the phone.)");
         ui.SetInstructions("INCOMING: MAYOR");
         yield break;
     }
 
-    // FIXED: Handles Day 1 Intro, Day 2 Intro, and Evaluation calls
     public void AnswerPhone()
     {
         if (currentState == GameState.PhoneCall)
         {
-            audioCtrl.SetRingtone(false); // STOP RINGTONE kapag sinagot na
-
+            audioCtrl.SetRingtone(false);
+            audioCtrl.PlayInteractSound();
             if (pendingEvalClip != null) StartCoroutine(ExecuteEvaluationCall());
             else if (currentDay == 1) StartCoroutine(Day1IntroCallSequence());
             else if (currentDay == 2) StartCoroutine(Day2PhoneCallSequence());
@@ -165,35 +185,90 @@ public class KasabwatController : MonoBehaviour
         UpdateUI();
     }
 
+    IEnumerator Day2PhoneCallSequence()
+    {
+        audioCtrl.PlayClip(audioCtrl.friendDay2);
+        yield return new WaitForSeconds(audioCtrl.GetLength(audioCtrl.friendDay2));
+        currentState = GameState.Intro;
+        UpdateUI();
+    }
+
     IEnumerator ExecuteEvaluationCall()
     {
-        audioCtrl.PlayClip(pendingEvalClip); yield return new WaitForSeconds(audioCtrl.GetLength(pendingEvalClip));
+        audioCtrl.PlayClip(pendingEvalClip);
+        yield return new WaitForSeconds(audioCtrl.GetLength(pendingEvalClip));
         pendingEvalClip = null;
         if (currentDay == 1)
         {
-            yield return ui.FadeInBlack(2f); LoadDay(2);
+            yield return ui.FadeInBlack(2f);
+            LoadDay(2);
             yield return ui.ShowTransitionText("DAY 2: THE RAT", 2f);
             yield return ui.FadeOutBlack(2f);
-            ui.SetOutput("STATION 8802: ACTIVE\n\n(Click phone for Intro Call.)");
-            currentState = GameState.PhoneCall; // Wait for Pare's Day 2 call
+            ui.SetOutput("STATION 8802: ACTIVE\n\n(Telephone ringing. Click phone.)");
+            currentState = GameState.PhoneCall;
+            audioCtrl.SetRingtone(true);
         }
         else if (currentDay == 2)
         {
-            yield return ui.FadeInBlack(2f); LoadDay(3);
-            yield return ui.ShowTransitionText("DAY 3: THE DECISION", 2f);
-            yield return ui.FadeOutBlack(4f); StartCoroutine(Day3BreachSequence());
+            yield return ui.FadeInBlack(2f);
+            LoadDay(3);
+            yield return ui.ShowTransitionText("DAY 3: THE TRAP", 2f);
+            yield return ui.FadeOutBlack(2f);
+            currentState = GameState.Intro;
+            UpdateUI();
         }
     }
 
     IEnumerator Day3BreachSequence()
     {
-        currentState = GameState.Day3_Breach; ui.SetOutput("CRITICAL ERROR: SYSTEM TERMINATED.");
-        audioCtrl.PlayClip(audioCtrl.Day2EndingCall); yield return new WaitForSeconds(audioCtrl.GetLength(audioCtrl.Day2EndingCall));
-        ui.SetInstructions("STAND UP. ESCAPE."); if (movement) movement.enabled = true;
+        currentState = GameState.Day3_Breach;
+        ui.SetOutput("CRITICAL ERROR: SYSTEM TERMINATED.");
+        audioCtrl.PlayClip(audioCtrl.Day2EndingCall);
+        yield return new WaitForSeconds(3f);
+        ui.SetInstructions("STAND UP. ESCAPE NOW.");
+        if (movement) movement.enabled = true;
+        if (officeLight) officeLight.intensity = 0;
     }
 
-    IEnumerator Day2PhoneCallSequence() { audioCtrl.PlayClip(audioCtrl.friendDay2); yield return new WaitForSeconds(audioCtrl.GetLength(audioCtrl.friendDay2)); currentState = GameState.Intro; UpdateUI(); }
-    void OpenAttachment() { Email e = inbox[selectedEmailIndex]; if (e.photoAttachment) ui.ShowPhoto(e.photoAttachment); if (e.audioAttachment) audioCtrl.PlayClip(e.audioAttachment); }
-    void TryLogout() { foreach (var e in inbox) if (!e.isProcessed) return; currentState = GameState.Evaluation; UpdateUI(); }
-    int GetPendingCount() { int c = 0; foreach (var e in inbox) if (!e.isProcessed) c++; return c; }
+    IEnumerator Day3FlickerLight()
+    {
+        while (currentDay == 3 && currentState != GameState.Day3_Breach)
+        {
+            officeLight.intensity = Random.Range(0.05f, 0.2f);
+            yield return new WaitForSeconds(Random.Range(0.1f, 0.4f));
+            officeLight.intensity = 0.4f;
+            yield return new WaitForSeconds(Random.Range(1f, 4f));
+        }
+    }
+
+    public void ToggleNote(bool show)
+    {
+        isReadingNote = show;
+        ui.stickyNotePanel.SetActive(show);
+        if (audioCtrl) audioCtrl.PlayInteractSound();
+        Cursor.lockState = show ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = show;
+        if (show) ui.ShowHoverPrompt(false);
+    }
+
+    void OpenAttachment()
+    {
+        Email e = inbox[selectedEmailIndex];
+        if (e.photoAttachment) ui.ShowPhoto(e.photoAttachment);
+        if (e.audioAttachment) audioCtrl.PlayClip(e.audioAttachment);
+    }
+
+    void TryLogout()
+    {
+        foreach (var e in inbox) if (!e.isProcessed) return;
+        currentState = GameState.Evaluation;
+        UpdateUI();
+    }
+
+    int GetPendingCount()
+    {
+        int c = 0;
+        foreach (var e in inbox) if (!e.isProcessed) c++;
+        return c;
+    }
 }
