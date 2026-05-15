@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 
+// 1. THIS IS THE CLASS THE COMPILER IS LOOKING FOR
 [System.Serializable]
 public class DialogueStep
 {
@@ -15,11 +16,22 @@ public class HackerConversation : MonoBehaviour
     public GameObject hackerPanel;
     public TextMeshProUGUI hackerDisplayText;
     public List<DialogueStep> conversationSteps;
+
     private int currentStep = 0;
     private bool isAwaitingInput = false;
     private KasabwatController mainController;
+    private string currentReyesMessage = ""; // Stores the current Reyes text
 
     void Start() => mainController = FindFirstObjectByType<KasabwatController>();
+
+    // 2. THIS IS THE METHOD TERMINALINPUT IS LOOKING FOR
+    public void UpdateLiveTyping(string text)
+    {
+        if (!isAwaitingInput) return;
+
+        // Show Reyes' message + the options + what Paul is typing right now
+        hackerDisplayText.text = currentReyesMessage + "\n\n> " + text;
+    }
 
     public void StartBreach()
     {
@@ -30,82 +42,57 @@ public class HackerConversation : MonoBehaviour
 
     IEnumerator TypeHackerMessage(string message)
     {
-        isAwaitingInput = false; // LOCK INPUT while Reyes is typing
+        isAwaitingInput = false;
+        currentReyesMessage = "";
         hackerDisplayText.text = "";
 
-        // REYES TYPING...
         foreach (char c in message.ToCharArray())
         {
-            hackerDisplayText.text += c;
+            currentReyesMessage += c;
+            hackerDisplayText.text = currentReyesMessage;
             yield return new WaitForSeconds(0.03f);
         }
 
-        // Display Options
-        hackerDisplayText.text += "\n\n<color=yellow>/ask 1: " + conversationSteps[currentStep].option1 + "</color>";
-        hackerDisplayText.text += "\n<color=yellow>/ask 2: " + conversationSteps[currentStep].option2 + "</color>";
-        hackerDisplayText.text += "\n<color=yellow>/ask 3: " + conversationSteps[currentStep].option3 + "</color>";
+        // Add the options to the base message
+        currentReyesMessage += "\n\n<color=yellow>/ask 1: " + conversationSteps[currentStep].option1 + "</color>";
+        currentReyesMessage += "\n<color=yellow>/ask 2: " + conversationSteps[currentStep].option2 + "</color>";
+        currentReyesMessage += "\n<color=yellow>/ask 3: " + conversationSteps[currentStep].option3 + "</color>";
 
-        isAwaitingInput = true; // UNLOCK INPUT
+        hackerDisplayText.text = currentReyesMessage + "\n\n> ";
+        isAwaitingInput = true;
     }
 
     public void ReceiveInput(string input)
     {
-        // 1. Check if we are even allowed to type (No spamming)
         if (!isAwaitingInput) return;
 
-        // 2. Clean the input (Case-insensitive)
         string cmd = input.ToLower().Trim();
-        string chosenOptionText = "";
         string responseText = "";
 
-        // 3. Logic for choosing the question
-        if (cmd == "/ask 1")
-        {
-            chosenOptionText = conversationSteps[currentStep].option1;
-            responseText = conversationSteps[currentStep].response1;
-        }
-        else if (cmd == "/ask 2")
-        {
-            chosenOptionText = conversationSteps[currentStep].option2;
-            responseText = conversationSteps[currentStep].response2;
-        }
-        else if (cmd == "/ask 3")
-        {
-            chosenOptionText = conversationSteps[currentStep].option3;
-            responseText = conversationSteps[currentStep].response3;
-        }
-        else return; // If they typed something else, ignore it.
+        if (cmd == "/ask 1") responseText = conversationSteps[currentStep].response1;
+        else if (cmd == "/ask 2") responseText = conversationSteps[currentStep].response2;
+        else if (cmd == "/ask 3") responseText = conversationSteps[currentStep].response3;
+        else return;
 
-        // 4. Start the response sequence
-        StartCoroutine(HandleResponse(chosenOptionText, responseText));
+        StartCoroutine(HandleResponse(responseText));
     }
 
-    IEnumerator HandleResponse(string playerQuestion, string hackerResponse)
+    IEnumerator HandleResponse(string hackerResponse)
     {
-        isAwaitingInput = false; // LOCK INPUT (Busy Flag)
+        isAwaitingInput = false;
 
-        // SHOW PAUL'S QUESTION (This fixes the "not displaying" issue)
-        hackerDisplayText.text = "PAUL: " + playerQuestion;
-        yield return new WaitForSeconds(1f);
-
-        // ENCRYPTION EFFECT
-        hackerDisplayText.text += "...";
+        // Immediately clear the input line for that "encrypted" transition
+        hackerDisplayText.text = "REYES: [DECRYPTING RESPONSE...]";
         yield return new WaitForSeconds(1.5f);
 
-        // SHOW REYES' RESPONSE
         hackerDisplayText.text = "REYES: " + hackerResponse;
         yield return new WaitForSeconds(4f);
 
-        // Move to next step or end
         currentStep++;
         if (currentStep < conversationSteps.Count)
-        {
             StartCoroutine(TypeHackerMessage(conversationSteps[currentStep].hackerStatement));
-        }
         else
-        {
             EndBreach();
-        }
     }
 
     void EndBreach()

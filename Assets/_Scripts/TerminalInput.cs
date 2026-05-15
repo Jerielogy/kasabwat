@@ -15,18 +15,25 @@ public class TerminalInput : MonoBehaviour
         controller = FindFirstObjectByType<KasabwatController>();
         ui = FindFirstObjectByType<TerminalUI>();
         hackerComp = FindFirstObjectByType<HackerConversation>();
-        Cursor.lockState = CursorLockMode.Locked;
+
+        // Use UnityEngine.Cursor to prevent ambiguity errors
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
     }
 
     void Update()
     {
         if (controller == null) return;
+
+        // 1. Camera Rotation
         if (!controller.isReadingNote)
         {
             float mX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float mY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
             if (controller.currentState == GameState.Day3_Breach) { xRot -= mY; yRot += mX; }
             else { xRot = Mathf.Clamp(xRot - mY, -45f, 45f); yRot = Mathf.Clamp(yRot + mX, -70f, 70f); }
+
             Camera.main.transform.localRotation = Quaternion.Slerp(Camera.main.transform.localRotation, Quaternion.Euler(xRot, yRot, 0f), smoothSpeed * Time.deltaTime);
         }
 
@@ -35,20 +42,40 @@ public class TerminalInput : MonoBehaviour
         PerformHoverCheck();
         if (Input.GetMouseButtonDown(0)) PerformRaycast();
 
+        // 2. Typing Logic
         if (IsNarrativeState() && controller.currentState != GameState.Intrusion) return;
         if (controller.currentState == GameState.Awakening && Input.anyKeyDown) { controller.HandleInput(""); return; }
 
         foreach (char c in Input.inputString)
         {
-            if (c == '\b') { if (currentTyped.Length > 0) currentTyped = currentTyped.Substring(0, currentTyped.Length - 1); }
+            if (c == '\b')
+            {
+                if (currentTyped.Length > 0) currentTyped = currentTyped.Substring(0, currentTyped.Length - 1);
+            }
             else if (c == '\n' || c == '\r')
             {
-                if (controller.currentState == GameState.Intrusion && hackerComp != null) hackerComp.ReceiveInput(currentTyped);
-                else controller.HandleInput(currentTyped);
+                if (controller.currentState == GameState.Intrusion && hackerComp != null)
+                    hackerComp.ReceiveInput(currentTyped);
+                else
+                    controller.HandleInput(currentTyped);
+
                 currentTyped = "";
             }
-            else { currentTyped += c; TerminalAudio am = FindFirstObjectByType<TerminalAudio>(); if (am) am.PlayTypingSound(); }
+            else
+            {
+                currentTyped += c;
+                TerminalAudio am = FindFirstObjectByType<TerminalAudio>();
+                if (am) am.PlayTypingSound();
+            }
+
+            // LIVE FEEDBACK: If we are in the hacker scene, show the typing there too
+            if (controller.currentState == GameState.Intrusion && hackerComp != null)
+            {
+                hackerComp.UpdateLiveTyping(currentTyped);
+            }
         }
+
+        // Standard UI reflection
         ui.SetInput(currentTyped);
     }
 

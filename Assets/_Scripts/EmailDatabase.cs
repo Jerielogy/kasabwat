@@ -5,16 +5,21 @@ using UnityEngine;
 public class Email
 {
     public string subject;
-    [TextArea(8, 15)] public string body;
+    [TextArea(5, 12)] public string[] bodyPages;
     public bool isProcessed, isSensitive;
     public Sprite photoAttachment;
     public AudioClip audioAttachment;
     public string attachmentName;
 
-    public Email(string s, string b, bool sensitive, Sprite photo = null, AudioClip audio = null, string aName = "")
+    public Email(string s, string[] b, bool sensitive, Sprite photo = null, AudioClip audio = null, string aName = "")
     {
-        subject = s; body = b; isSensitive = sensitive; isProcessed = false;
-        photoAttachment = photo; audioAttachment = audio; attachmentName = aName;
+        subject = s;
+        bodyPages = b;
+        isSensitive = sensitive;
+        isProcessed = false;
+        photoAttachment = photo;
+        audioAttachment = audio;
+        attachmentName = aName;
     }
 }
 
@@ -40,52 +45,49 @@ public class EmailDatabase : MonoBehaviour
 
         if (day == 1)
         {
-            inbox.Add(new Email("HR: WELCOME PO!", "Hi Paul! Welcome to the Admin team. You're the new lead clerk for Station 8802. Task mo is to just clean up the 'Proyektong Agos' database. Make sure you clear the backlogs from the guy before you, okay? Pag may nag-leak, literally terminated agad. G?", false));
-            inbox.Add(new Email("IT: SECURITY REMINDER", "Friendly reminder: We’re monitoring your workstation for quality assurance. We caught some unauthorized 'pings' from outside nodes lately. Super sketch. Please update your encryption keys and 'wag iwanan yung terminal.", false));
-            inbox.Add(new Email("ST.JOSEPH HOSPITAL: SURGERY UPDATE", "Hi Mr. Paul, just a formal confirmation na the downpayment for your mother is fully paid. Thanks to the Mayor’s SPECIAL FUND. Next Tuesday na yung heart valve replacement. Make sure the patient is resting and low-stress. The Mayor is so generous for supporting us!", true));
-            inbox.Add(new Email("MAYOR'S OFFICE: AGOS PHASE 1", "URGENT: Finalizing the drainage maps for Brgy. Makahiya. Since andun yung private estate ni Mayor, that area is the top priority, obviously. You're instructed to mark all soil tests as 'Optimal' and 'Highly Compatible.' Don't mind the technical data from the engineers. We cannot have delays, so please make it look good.", true));
-            inbox.Add(new Email("BUDGET: ALLOCATION 2026", "BUDGET SUMMARY FOR PROYEKTONG AGOS:\n\nBrgy. Makahiya (Elite Zone): 15.2M PHP\nBrgy. Matulungin: 1.5M PHP\nBrgy. Matapang (Basin): 0.00 PHP\n\nNote: The budget for the Brgy. Matapang dike? Like, re-routed na to 'Administrative Supplies' per Mayor's order. Reconcile the ledger to reflect this change, please.", true));
-            inbox.Add(new Email("PROCUREMENT: VOCOLITH CONST.", "Purchase Order #9902: 500 Bags of Cement. Deliver to: Private Residence Lot 12, Makahiya Heights. Tag this as 'Matapang Flood Wall Maintenance' sa system, okay? Make sure Vocolith gets paid by Friday. The Mayor wants this to be handled discreetly. Keep it lowkey.", true));
-            inbox.Add(new Email("INTERNAL MEMO: CLERK REYES", "To all staff: Effective immediately, Clerk Reyes is no longer with the office. Voluntary resignation daw, super final. For security reasons, 'wag niyo siyang i-chat or call. Anything he left sa desk, HR na ang bahala.", false));
-            inbox.Add(new Email("CITIZEN COMPLAINT: BRGY. MATAPANG", "Sir, I’m literally desperate na. The dike here in Matapang is cracking. It’s not even concrete, parang dirt lang. We were promised 'Agos' funds months ago. Takot na yung mga kids ko. Please help us.", true));
-            inbox.Add(new Email("FAMILY: TITO LITO", "Paul! I just visited your mom at Mercy General. She's so happy, literally crying. Sabi niya the Mayor visited her and told her not to worry about the bills kasi you're a 'loyal worker.' We are so lucky! Don't do anything to lose it, okay?", false));
-            inbox.Add(new Email("SYSTEM: LOGOUT REMINDER", "End of shift reached. System Audit requires that all sensitive files regarding land acquisition are SCRUBBED from the local drive. Protect the office, protect your career.", true));
+            inbox.Add(new Email("HR: WELCOME PO!", new string[] { "Hi Paul! Welcome sa Admin team. Ikaw ang bagong lead clerk ng Station 8802.", "Ang trabaho mo ay linisin ang 'Proyektong Agos' database. Burahin ang mga backlogs. Pag may nag-leak, terminated ka agad. G?" }, false));
+            inbox.Add(new Email("IT: SECURITY REMINDER", new string[] { "Paalala lang: Binabantayan namin ang workstation mo. May mga unauthorized 'pings' kaming nakukuha mula sa labas.", "Maging maingat. I-update ang encryption keys at huwag iiwanang bukas ang terminal." }, false));
+            inbox.Add(new Email("ST.JOSEPH HOSPITAL: SURGERY UPDATE", new string[] { "Magandang araw Mr. Paul, kumpirmado na po ang downpayment para sa operasyon ng nanay niyo. Salamat sa SPECIAL FUND ni Mayor.", "Sa Martes na ang heart valve replacement. Siguraduhing hindi na-stress ang pasyente. Napakabuti talaga ni Mayor!" }, true));
+            inbox.Add(new Email("MAYOR'S OFFICE: AGOS PHASE 1", new string[] { "URGENTE: Tinatapos na ang drainage maps para sa Brgy. Makahiya. Dahil nandoon ang private estate ni Mayor, priority ang area na 'yan.", "Markahan ang lahat ng soil tests bilang 'Optimal.' Huwag pansinin ang data mula sa mga engineer. Bawal ang delay." }, true));
+            inbox.Add(new Email("BUDGET: ALLOCATION 2026", new string[] { "BUDGET SUMMARY - PROYEKTONG AGOS:\n\nBrgy. Makahiya: 15.2M PHP\nBrgy. Matulungin: 1.5M PHP\nBrgy. Matapang: 0.00 PHP", "Note: Ang budget para sa dike sa Matapang ay nailipat na sa 'Administrative Supplies' per order ni Mayor. I-reconcile ang ledger." }, true));
+            inbox.Add(new Email("PROCUREMENT: VOCOLITH CONST.", new string[] { "Purchase Order #9902: 500 Bags ng Semento. Deliver sa: Private Residence Lot 12, Makahiya Heights.", "I-tag ito bilang 'Matapang Flood Wall Maintenance.' Siguraduhing mababayaran ang Vocolith sa Biyernes. Discreet lang tayo." }, true));
+            inbox.Add(new Email("INTERNAL MEMO: CLERK REYES", new string[] { "Sa lahat: Effective immediately, wala na sa opisina si Clerk Reyes. Voluntary resignation daw, super final.", "Para sa security, huwag na siyang i-contact. Anumang gamit na naiwan niya, HR na ang bahala." }, false));
+            inbox.Add(new Email("CITIZEN COMPLAINT: BRGY. MATAPANG", new string[] { "Sir, nagmamakaawa po kami. May mga bitak na ang dike rito sa Matapang. Parang lupa lang ang itinambak nila.", "Ilang buwan na kaming nanghihingi ng tulong. Takot na ang mga anak ko. Tulungan niyo po kami." }, true));
+            inbox.Add(new Email("FAMILY: TITO LITO", new string[] { "Paul! Kakagaling ko lang sa Mercy General. Tuwang-tuwa ang nanay mo, umiiyak pa nga.", "Binisita raw siya ni Mayor at sinabing 'wag mag-alala sa bill dahil 'loyal worker' ka raw. Napakaswerte natin!" }, false));
+            inbox.Add(new Email("SYSTEM: LOGOUT REMINDER", new string[] { "Tapos na ang shift. Siguraduhing lahat ng sensitive files ay BURADO na sa local drive.", "Protektahan ang opisina, protektahan ang career mo." }, true));
         }
         else if (day == 2)
         {
-            // === PART 1: THE CORRUPTION ===
-            inbox.Add(new Email("SECURITY: SKETCHY GUY", "Someone looking like Clerk Reyes was spotted near the server room around 2:00 AM. Super sus. Security is on high alert now.", true, photoCCTVStill, null, "CCTV_044.img"));
-            inbox.Add(new Email("HR: REYES' STUFF", "We found a yellow sticky note stuck sa ilalim ng desk mo. HR thinks it’s encrypted passwords. If you find it, surrender it to HR immediately. Don't read it.", false, photoReyesLocker, null, "REYES_LOCKER.img"));
-            inbox.Add(new Email("CITIZEN: BRGY. MATULUNGIN", "The rains haven't even peaked yet but yung main road dito, like, waist-deep na. Nasaan na yung 'Agos' money?", true, photoVictimSite, null, "VICTIM_SITE.img"));
-            inbox.Add(new Email("WIRETAP: MAYOR & CHIEF", "Corrupted audio of Call 22-A. The Mayor is telling the Chief to 'handle' the protestors sa lowland area. Mark this as 'SPAM' then purge.", true, null, audioWiretap22A, "REDACTED.mp3"));
-            inbox.Add(new Email("ENGINEERING: SOIL REPORT", "TECHNICAL DATA: The foundation for the Matapang dike? Totally REJECTED. But Mayor overruled this. Evidence of the rejection stamp is attached.", true, photoSoilReject, null, "SOIL_REJECT.img"));
-            inbox.Add(new Email("IT: DATA LEAK WARNING", "Someone is trying to tunnel into Station 8802 using a 'Ghost' account. Don't answer anything that looks like a terminal prompt.", true));
-            inbox.Add(new Email("MAYOR'S OFFICE: LOYALTY CHECK", "Paul, the Mayor noticed you were viewing 'Phase 2' files for a bit too long. Remember who’s paying for your mom’s surgery. Focus on your work, okay?", true, photoOfficialSeal, null, "OFFICIAL_SEAL.img"));
-            inbox.Add(new Email("LEDGER: AGOS PHASE 2", "PROJECT: AGOS PHASE 2\nCONTRACTOR: VOCOLITH\nBUDGET: 50,000,000 PHP\nACTUAL SPEND: 2,500,000 PHP\n\nNotes: The dike in Matapang is literally just a pile of dirt.", true, photoVocolithDoc, null, "VOCOLITH_DOC.img"));
-
-            // === PART 2: THE BRUTAL TURN ===
-            inbox.Add(new Email("INTERNAL: 'AGOS' CLEANUP", "Paul, clean the ledger now. We had a 'situation' sa Matapang protest site last night. Pag walang record ng people, walang record ng crackdown. We pay you for this, right?", true, photoMatapangIncident, null, "MATAPANG_INCIDENT.img"));
-            inbox.Add(new Email("SYSTEM: COMPROMISED LEDGER", "CRITICAL ERROR. Someone restored the Phase 2 docs. The ledger shows 'Vocolith' used flood funds to build a 2M PHP swimming pool. Delete this whole folder.", true, photoResortPool, null, "RESORT_POOL.img"));
-            inbox.Add(new Email("REYES: HELLO, NEW HIRE.", "Paul, My name is Reyes. The one you replaced as a clerk. I know everything about you.", false));
-            inbox.Add(new Email("VOCOLITH: 'LOGISTICS COST'", "Billing update: New item for 'Evidence Disposal' sa site (1.5M PHP). This includes concrete and deep disposal for 'project impediments.' Label this as 'Maintenance.'", true, photoPayload99, null, "DISPOSAL_COSTS.img"));
-            inbox.Add(new Email("MERCY GENERAL: VISITOR NOTICE", "Paul, some guys in suits just arrived sa room ng mom mo. Sabi nila Mayor's orders daw to 'monitor' her. I can't stop them, Paul. They look super scary.", true));
-            inbox.Add(new Email("SOS: LAST MESSAGE", "They are purging everyone before the storm hits. Everyone who complained is being taken. We're done for.", true, photoDikeCloseup, null, "THE_PURGE.img"));
-            inbox.Add(new Email("URGENT: SYSTEM LOG", "FINAL WARNING: Station 8802 is compromised. Purge the Agos directory now or the system will purge you too. Choose your family, Paul.", true, photoStormMap, null, "SYSTEM_ERR.img"));
+            inbox.Add(new Email("SECURITY: SKETCHY GUY", new string[] { "May nakitang kamukha ni Clerk Reyes malapit sa server room kaninang 2:00 AM. Napaka-suspisyoso.", "Naka-high alert na ang security ngayon." }, true, photoCCTVStill, null, "CCTV_044.img"));
+            inbox.Add(new Email("HR: REYES' STUFF", new string[] { "May nahanap kaming yellow sticky note sa ilalim ng desk mo. Tingin ng HR, encrypted passwords ito.", "I-surrender agad ito sa HR. Huwag mong babasahin." }, false, photoReyesLocker, null, "REYES_LOCKER.img"));
+            inbox.Add(new Email("CITIZEN: BRGY. MATULUNGIN", new string[] { "Hindi pa man lumalakas ang ulan pero hanggang kirot na ang baha rito. Nasaan na ang pera ng 'Agos'?", "Wala kaming makitang trabahador dito." }, true, photoVictimSite, null, "VICTIM_SITE.img"));
+            inbox.Add(new Email("WIRETAP: MAYOR & CHIEF", new string[] { "Corrupted audio ng Call 22-A.", "Inuutusan ni Mayor ang Chief na 'ayusin' ang mga nagpo-protesta sa lowland area. I-tag bilang SPAM at burahin." }, true, null, audioWiretap22A, "REDACTED.mp3"));
+            inbox.Add(new Email("ENGINEERING: SOIL REPORT", new string[] { "TECHNICAL DATA: Ang pundasyon para sa Matapang dike? REJECTED.", "Pero ni-overrule ito ni Mayor. Ang ebidensya ng rejection stamp ay naka-attach." }, true, photoSoilReject, null, "SOIL_REJECT.img"));
+            inbox.Add(new Email("IT: DATA LEAK WARNING", new string[] { "May sumusubok mag-tunnel sa Station 8802 gamit ang isang 'Ghost' account.", "Huwag sasagot sa anumang terminal prompt." }, true));
+            inbox.Add(new Email("MAYOR'S OFFICE: LOYALTY CHECK", new string[] { "Paul, napansin ni Mayor na matagal mong tinititigan ang 'Phase 2' files. Isipin mo ang nanay mo.", "Isipin mo kung sino ang nagbabayad ng surgery niya. Focus ka lang sa trabaho." }, true, photoOfficialSeal, null, "OFFICIAL_SEAL.img"));
+            inbox.Add(new Email("LEDGER: AGOS PHASE 2", new string[] { "PROJECT: AGOS PHASE 2\nCONTRACTOR: VOCOLITH\nBUDGET: 50,000,000 PHP", "ACTUAL SPEND: 2,500,000 PHP\n\nNotes: Ang dike sa Matapang ay tumpok lang ng lupa." }, true, photoVocolithDoc, null, "VOCOLITH_DOC.img"));
+            inbox.Add(new Email("INTERNAL: 'AGOS' CLEANUP", new string[] { "Paul, linisin mo na ang ledger. Nagkaroon ng 'insidente' sa Matapang kagabi.", "Pag walang record ng tao, walang record ng crackdown. Binabayaran ka namin para rito, 'di ba?" }, true, photoMatapangIncident, null, "MATAPANG_INCIDENT.img"));
+            inbox.Add(new Email("SYSTEM: COMPROMISED LEDGER", new string[] { "CRITICAL ERROR. May nag-restore ng Phase 2 docs.", "Ginamit ng Vocolith ang flood funds para sa 2M PHP swimming pool. I-delete ang folder na ito." }, true, photoResortPool, null, "RESORT_POOL.img"));
+            inbox.Add(new Email("REYES: NASAAN NA SILA.", new string[] { "Paul, kung nababasa mo ito, nahanap na nila ako.", "Tingnan mo ang litrato. Hindi 'yan mga protestors—katawan 'yan ng mga taong masyadong maraming alam." }, true));
+            inbox.Add(new Email("VOCOLITH: 'LOGISTICS COST'", new string[] { "Billing update: Bagong item para sa 'Evidence Disposal' (1.5M PHP).", "Kasama rito ang semento para sa paglilibing ng 'mga sagabal sa proyekto.' I-label bilang Maintenance." }, true, photoPayload99, null, "DISPOSAL_COSTS.img"));
+            inbox.Add(new Email("MERCY GENERAL: VISITOR NOTICE", new string[] { "Paul, may mga lalaking naka-suit na dumating sa room ng nanay mo. Orders daw ni Mayor.", "Hindi ko sila mapigilan. Paul, nakakatakot ang itsura nila." }, true));
+            inbox.Add(new Email("SOS: LAST MESSAGE", new string[] { "Pinapatay nila lahat bago tumama ang bagyo.", "Lahat ng nagreklamo, kinukuha na nila. Katapusan na natin." }, true, photoDikeCloseup, null, "THE_PURGE.img"));
+            inbox.Add(new Email("URGENT: SYSTEM LOG", new string[] { "HULING BABALA: Compromised na ang Station 8802. Burahin na ang Agos directory.", "Piliin mo ang pamilya mo, Paul." }, true, photoStormMap, null, "SYSTEM_ERR.img"));
         }
         else if (day == 3)
         {
-            inbox.Add(new Email("STORM ALERT: SIGNAL #4", "The storm hit na. Brgy. Matapang is 4 feet deep. The dirt dike is failing, obviously. Delete all incoming SOS messages immediately.", true));
-            inbox.Add(new Email("MAYOR: THE CLEANUP", "Wipe everything. The whole 'Agos' folder. If the files disappear, the failure is just an 'Act of God' and not us. This is for your mom, Paul.", true));
-            inbox.Add(new Email("SOS: BRGY. MATAPANG #1", "PLEASE HELP US. THE WATER IS AT THE ROOF. THE DIKE BROKE NA. WE ARE TRAPPED SA ATTIC.", true));
-            inbox.Add(new Email("SOS: BRGY. MATAPANG #2", "NASAAN YUNG RESCUE? ILANG ORAS NA KAMI NAG-E-EMAIL. THE WATER IS SO COLD. PLEASE ANSWER.", true));
-            inbox.Add(new Email("SYSTEM: BREACH DETECTED", "CRITICAL: Internal files are being copied to an external drive. Station 8802 is the source. STOP THE PROCESS NOW.", true));
+            inbox.Add(new Email("STORM ALERT: SIGNAL #4", new string[] { "Tumama na ang bagyo. 4 feet deep na sa Matapang. Bumigay na ang dike. I-delete lahat ng SOS." }, true));
+            inbox.Add(new Email("MAYOR: THE CLEANUP", new string[] { "I-wipe lahat. Ang buong 'Agos' folder. 'Act of God' na ito at hindi sa atin. Para ito sa nanay mo." }, true));
+            inbox.Add(new Email("SOS: BRGY. MATAPANG #1", new string[] { "TULONG PO. NASA BUBUNGAN NA KAMI. BUMIGAY NA ANG DIKE. TRAPPED KAMI RITO." }, true));
+            inbox.Add(new Email("SOS: BRGY. MATAPANG #2", new string[] { "NASAAN NA ANG RESCUE? ANG LAMIG NA NG TUBIG. SUMAGOT KAYO." }, true));
+            inbox.Add(new Email("SYSTEM: BREACH DETECTED", new string[] { "CRITICAL: May kumokopya ng internal files sa external drive. ITIGIL ITO NGAYON DIN." }, true));
             for (int i = 6; i <= 15; i++)
-                inbox.Add(new Email("Corrupted Citizen Log #" + i, "They are drowning because you're deleting the proof. Look at the water, Paul. It's on your hands.", true));
-            inbox.Add(new Email("MERCY GENERAL: EMERGENCY", "Paul, it's Nurse Sarah. The guys in suits are moving your mom. She's so scared. She won't go until she talks to you. Is this part of the plan?", true));
-            inbox.Add(new Email("REYES: THE TRUTH", "The Mayor is using your mom as a hostage, Paul. I have the drive ready. If you don't keep the files, those people died for nothing. LEAK IT.", true));
-            inbox.Add(new Email("MAYOR: FINAL ORDER", "I have your mother, Paul. Delete the last 3 files and log out. Betray me, and she never leaves that van. Choose wisely.", true));
-            inbox.Add(new Email("SYSTEM: CRITICAL FAILURE", "99% compromised. Station 8802 is shutting down. The breach is complete.", true));
-            inbox.Add(new Email("FINAL LOG: THE DECISION", "THE WATER IS AT THE LOBBY. LEAK THE DATA (/keep) OR PROTECT THE MAYOR (/delete). IT'S LITERALLY UP TO YOU.", true));
+                inbox.Add(new Email("Corrupted Log #" + i, new string[] { "Nalulunod sila dahil binubura mo ang ebidensya. Tingnan mo ang kamay mo, Paul." }, true));
+            inbox.Add(new Email("MERCY GENERAL: EMERGENCY", new string[] { "Paul, si Nurse Sarah ito. Inililipat na ng mga lalaki ang nanay mo. Takot na takot siya." }, true));
+            inbox.Add(new Email("REYES: ANG KATOTOHANAN", new string[] { "Ginagawang hostage ni Mayor ang nanay mo. I-leak mo ang files para hindi masayang ang buhay nila." }, true));
+            inbox.Add(new Email("MAYOR: FINAL ORDER", new string[] { "Hawak ko ang nanay mo, Paul. Burahin ang huling 3 files at mag-logout. Kung hindi, hindi na siya makakalabas." }, true));
+            inbox.Add(new Email("SYSTEM: CRITICAL FAILURE", new string[] { "99% compromised. Station 8802 is shutting down." }, true));
+            inbox.Add(new Email("FINAL LOG: ANG DESISYON", new string[] { "I-LEAK ANG DATA (/keep) O PROTEKTAHAN SI MAYOR (/delete). NASA KAMAY MO NA ITO." }, true));
         }
         return inbox;
     }

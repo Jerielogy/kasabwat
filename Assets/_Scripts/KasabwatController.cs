@@ -89,7 +89,7 @@ public class KasabwatController : MonoBehaviour
             selectedEmailIndex = idx;
             currentState = GameState.Viewing;
             UpdateUI();
-            string content = "SUBJECT: " + inbox[idx].subject + "\n----------------\n" + inbox[idx].body;
+            string content = "SUBJECT: " + inbox[idx].subject + "\n----------------\n" + inbox[idx].bodyPages[0];
             if (!string.IsNullOrEmpty(inbox[idx].attachmentName)) content += "\n\n[ATTACHMENT: " + inbox[idx].attachmentName + "]";
             ui.SetOutput(content);
         }
@@ -97,10 +97,17 @@ public class KasabwatController : MonoBehaviour
 
     void ProcessEmail(bool deleteChoice)
     {
+        // 1. HIDE THE ATTACHMENT IMMEDIATELY
+        // This ensures photos/audio stop playing as soon as you make a choice
+        ui.HideAttachment();
+
+        // 2. Logic for processing the file
         inbox[selectedEmailIndex].isProcessed = true;
         processedToday++;
+
         if (inbox[selectedEmailIndex].isSensitive != deleteChoice) errors++;
 
+        // 3. Check for special events (Intrusion / Day transitions)
         if (currentDay == 2 && processedToday == 8) StartCoroutine(IntrusionSequence());
         else if (currentDay == 2 && processedToday == 15)
         {
@@ -110,7 +117,8 @@ public class KasabwatController : MonoBehaviour
         else if (currentDay == 3 && processedToday == 20) StartCoroutine(Day3BreachSequence());
         else
         {
-            ui.SetOutput("FILE PROCESSED.\n\nTYPE /close TO RETURN.");
+            // Display the success message on the terminal
+            ui.SetOutput("FILE PROCESSED.\n\nTYPE /close TO RETURN TO INBOX.");
             ui.SetObjective(GetPendingCount());
         }
     }

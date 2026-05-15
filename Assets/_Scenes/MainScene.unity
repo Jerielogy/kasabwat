@@ -5142,7 +5142,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a3f88b79d6ae33846aa92ccd5b6dbd29,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2027735808}
   m_SourcePrefab: {fileID: 100100000, guid: a3f88b79d6ae33846aa92ccd5b6dbd29, type: 3}
 --- !u!4 &1213976443 stripped
 Transform:
@@ -8002,10 +8006,10 @@ MonoBehaviour:
   telephoneSource: {fileID: 1798988480}
   typingClip: {fileID: 8300000, guid: 9f6a11b397e740d42aacd01b42b26aa2, type: 3}
   interactClip: {fileID: 8300000, guid: f6323a0b367665441b37e3e9624dee1f, type: 3}
-  goodCall: {fileID: 8300000, guid: 40f55a88f10be7f408183562afc139c6, type: 3}
-  badCall: {fileID: 8300000, guid: dbe397ac866405e4d86cb6637ec2a125, type: 3}
-  friendDay1: {fileID: 8300000, guid: 58af9dd67b423f44291ae8ccf5e595cd, type: 3}
-  friendDay2: {fileID: 8300000, guid: bfd06bae449b1b24e938e6755b9ef036, type: 3}
+  goodCall: {fileID: 8300000, guid: 551768986ed5df3439c5b650af4ac0de, type: 3}
+  badCall: {fileID: 8300000, guid: a210ede43305324458385a70f38ac4fb, type: 3}
+  friendDay1: {fileID: 8300000, guid: 276e778042eb64142aba9d745a754aa7, type: 3}
+  friendDay2: {fileID: 8300000, guid: c1c3427ac632b194f9110706e3fad302, type: 3}
   Day2EndingCall: {fileID: 8300000, guid: 56cd8a48e2be3f14193957626cf68d04, type: 3}
   IntrusionSFX: {fileID: 0}
   ringtone: {fileID: 8300000, guid: 5033ba65f6ed4514fa8ebabc40c90c59, type: 3}
@@ -8178,97 +8182,104 @@ MonoBehaviour:
   hackerPanel: {fileID: 45023171}
   hackerDisplayText: {fileID: 2002116275}
   conversationSteps:
-  - hackerStatement: Hello, Paul! How are you?
+  - hackerStatement: Hello, Paul! Kumusta ka?
     option1: Um. Hello?
-    option2: How did you know my name?
-    option3: Who are you?
-    response1: You sound nervous. You should be. Sitting in that chair carries a
-      heavy price, and the interest is starting to collect.
-    response2: "I know more than just your name. I know your employee ID, your shift
-      hours, and exactly which files or emails you\u2019ve been \"cleaning\" for
-      the Mayor."
-    response3: A ghost. Or a warning. It depends entirely on what you do with the
-      terminal.
-  - hackerStatement: I used to sit where you are sitting now. I drank from that same
-      mug. I even left a note under the desk. Did you find it, Paul?
-    option1: You are Clerk Reyes?
-    option2: Why did you leave?
-    option3: What happened to you?
-    response1: Reyes is the name of a man who doesn't exist anymore. Call me a whistleblower.
-      Or call me the guy who didn't want to drown with the rest of this town.
-    response2: I didn't "leave." I was escorted out. The Mayor doesn't like it when
-      his clerks start asking why the flood walls in Brgy. Matapang are made of sand
-      instead of concrete.
-    response3: They offered me a "vacation." I haven't seen the sun in months. The
-      Mayor doesn't fire people; he erases them to keep the ledger clean.
-  - hackerStatement: "The Mayor is a generous man, isn't he? Paying for your mother\u2019s
-      heart surgery at that private hospital... it must feel like a miracle for your
-      family."
-    option1: He is a good man for doing that.
-    option2: How do you know about her?
-    option3: "It\u2019s none of your business."
-    response1: '"Good" isn''t the word I''d use. "Calculated" is better. He didn''t
-      give you a gift; he bought a leash. He owns you now.'
-    response2: "Every hospital bill in this district goes through the Mayor\u2019s
-      \"Special Discretionary Fund.\" I've seen the receipts. Your mother's life
-      is being traded for your silence."
-    response3: It becomes my business when her surgery is funded by money stolen
-      from the Brgy. Matulungin drainage project. Her life for twelve others who
-      will die in the next flood. Fair trade?
-  - hackerStatement: Look at the file 'AGOS_PHASE_2'. It claims 50 million pesos
-      was spent on the dike in Brgy. Matapang. Go on. Open it. Tell me what you see.
-    option1: '[Open File] It looks like a standard ledger.'
-    option2: I am not supposed to look at Phase 2.
-    option3: What are you trying to prove?
-    response1: "Look at the contractor. 'Vocolith Construction.' It\u2019s a ghost
-      company owned by the Mayor\u2019s cousin. That 50 million bought a private
-      resort, not a dike."
-    response2: "Because if you do, you\u2019ll realize the \"dike\" is just a pile
-      of dirt covered in grass. It will wash away the second the storm hits."
-    response3: "I\u2019m proving that the people of Brgy. Matapang are being left
-      to die so the Mayor can keep his campaign pockets full. You are the one helping
-      him hide the evidence."
-  - hackerStatement: The clouds are getting dark over the valley. The weather bureau
-      says the storm will hit by morning. Thousands of families in Brgy. Matapang
-      are sleeping, thinking they are safe behind a wall that doesn't exist.
-    option1: What can I even do?
-    option2: I can't stop the rain.
-    option3: I have to protect my mother first.
-    response1: Leak the Phase 2 ledger. Send it to the news stations. Force the Mayor
-      to open the emergency spillways before the pressure breaks the dirt walls.
-    response2: You can't stop the rain, but you can stop the lies. If they know the
-      dike is a sham, they can evacuate. If you stay silent, they will drown in their
-      beds.
-    response3: "And that is exactly what the Mayor is counting on. He knows you\u2019ll
-      choose your own blood over the lives of an entire barangay. He\u2019s using
-      your love as a weapon."
-  - hackerStatement: "Careful, Paul. I just saw the security guard walk past your
-      door. He\u2019s looking at his watch. You\u2019re staying late tonight. He\u2019s
-      getting suspicious."
-    option1: Is he working for the Mayor?
-    option2: I'm just doing my job.
-    option3: Help me get out of here.
-    response1: Everyone in this building works for the Mayor. The janitor, the guard,
-      even the water guy. They are all eyes. And right now, they are watching you.
-    response2: Your "job" was supposed to be public service. Now your job is evidence
-      disposal. Don't confuse the two before it's too late.
-    response3: I can't help you leave, but I can help you survive the night. Keep
-      the terminal window small. Don't look at the cameras. If you see the red light
-      blink twice, it means they are recording.
-  - hackerStatement: This is my last transmission before the system locks down for
-      the night. Tomorrow, the Mayor will come to your desk. He will look you in
-      the eye and ask if the files are gone. He will mention your mother again.
-    option1: I'm scared of what he'll do.
-    option2: I'll do what I have to do.
-    option3: Why did you choose to tell me?
-    response1: Good. Fear means you still have a conscience. Use it to make the right
-      choice when the water starts rising.
-    response2: '"What you have to do" could mean saving the town or saving your own
-      skin. Just remember: once you hit ''Delete'' on those logs, you are a "Kasabwat"
-      forever.'
-    response3: 'Because you''re the one holding the key. You''re the one the system
-      chose to replace me. I''m giving you the chance I never had: a way to walk
-      away with a clean heart.'
+    option2: Paano mo nalaman ang pangalan ko?
+    option3: Sino ka ba?
+    response1: Mukhang kinakabahan ka. Dapat lang. May mabigat na kapalit ang pag-upo
+      sa silyang 'yan, at nagsisimula na silang maningil.
+    response2: Hindi lang pangalan mo ang alam ko. Alam ko ang employee ID mo, ang
+      shift hours mo, at kung aling mga files o emails ang 'nililinis' mo para kay
+      Mayor.
+    response3: Isang multo. O isang babala. Depende 'yan sa kung ano ang gagawin
+      mo sa terminal na 'yan.
+  - hackerStatement: Dati rin akong nakaupo d'yan sa pwesto mo. Uminom sa mug na
+      'yan. Nag-iwan pa nga ako ng note sa ilalim ng desk. Nahanap mo ba, Paul?
+    option1: Ikaw ba si Clerk Reyes?
+    option2: Bakit ka umalis?
+    option3: Anong nangyari sa'yo?
+    response1: Si Reyes ay pangalan ng taong hindi na umiiral. Tawagin mo na lang
+      akong whistleblower. O ang taong ayaw malunod kasama ng buong bayan na ito.
+    response2: Hindi ako 'umalis.' Ineskortan ako palabas. Ayaw ni Mayor kapag nagtatanong
+      ang mga clerk niya kung bakit gawa sa buhangin ang dike sa Matapang sa halip
+      na semento.
+    response3: Binigyan nila ako ng 'bakasyon.' Ilang buwan ko nang hindi nakikita
+      ang araw. Hindi nagtatanggal ng tao si Mayor; binubura niya sila para manatiling
+      malinis ang ledger.
+  - hackerStatement: Matulungin na tao si Mayor, 'di ba? Binabayaran ang operasyon
+      sa puso ng nanay mo sa private hospital na 'yan... parang milagro para sa pamilya
+      mo.
+    option1: Mabuti siyang tao dahil sa ginawa niya.
+    option2: Paano mo nalaman ang tungkol sa kanya?
+    option3: Wala kang pakialam sa amin.
+    response1: Hindi 'mabuti' ang salitang gagamitin ko. 'Calculated' ang mas tama.
+      Hindi ka niya binigyan ng regalo; bumili siya ng tali. Pag-aari ka na niya
+      ngayon.
+    response2: Lahat ng hospital bill sa distritong ito ay dumadaan sa 'Special Discretionary
+      Fund' ni Mayor. Nakita ko ang mga resibo. Ang buhay ng nanay mo ay ipinagpapalit
+      sa pananahimik mo.
+    response3: Nagkakaroon ako ng pakialam kapag ang surgery niya ay kinuha sa pera
+      na ninakaw mula sa drainage project ng Matulungin. Buhay niya kapalit ng labindalawang
+      iba pa na malulunod sa susunod na baha. Patas ba?
+  - hackerStatement: Tingnan mo 'yung file na 'AGOS_PHASE_2'. Sabi rito, 50 million
+      pesos ang ginastos sa dike sa Brgy. Matapang. Sige na. Buksan mo. Sabihin mo
+      sa akin kung anong nakikita mo.
+    option1: '[Open File] Mukha namang normal na ledger.'
+    option2: Hindi ko dapat tinitingnan ang Phase 2.
+    option3: Ano bang sinusubukan mong patunayan?
+    response1: Tingnan mo 'yung contractor. 'Vocolith Construction.' Ghost company
+      'yan na pag-aari ng pinsan ni Mayor. 'Yung 50 million, pambili ng private resort,
+      hindi ng dike.
+    response2: Dahil kapag ginawa mo 'yan, malalaman mong ang 'dike' ay tumpok lang
+      ng lupa na tinakpan ng damo. Aanurin 'yan sa oras na tumama ang bagyo.
+    response3: Pinapatunayan ko na hinahayaan nilang mamatay ang mga tao sa Matapang
+      para manatiling puno ang bulsa ni Mayor. Ikaw ang tumutulong sa kanya na itago
+      ang ebidensya.
+  - hackerStatement: Nagdidilim na ang mga ulap sa lambak. Sabi ng weather bureau,
+      tatama ang bagyo bukas ng umaga. Libu-libong pamilya sa Matapang ang natutulog
+      ngayon, akala nila ligtas sila sa likod ng pader na hindi naman talaga umiiral.
+    option1: Ano namang magagawa ko?
+    option2: Hindi ko kayang itigil ang ulan.
+    option3: Kailangan kong protektahan ang nanay ko.
+    response1: I-leak mo ang Phase 2 ledger. Ipadala mo sa mga news station. Pilitin
+      mo si Mayor na buksan ang mga emergency spillway bago wasakin ng pressure ang
+      mga pader na lupa.
+    response2: Hindi mo kayang itigil ang ulan, pero kaya mong itigil ang mga kasinungalingan.
+      Kung alam nilang peke ang dike, pwede silang lumikas. Kung mananahimik ka,
+      malulunod sila sa sarili nilang higaan.
+    response3: At 'yan mismo ang inaasahan ni Mayor. Pipiliin mo ang sarili mong
+      dugo kaysa sa buhay ng buong barangay. Ginagamit niya ang pagmamahal mo bilang
+      sandata.
+  - hackerStatement: Mag-ingat ka, Paul. Nakita ko ang guard na dumaan sa pinto mo.
+      Tinitingnan niya ang relo niya. Nagpapaiwan ka hanggang gabi. Naghihinala na
+      siya.
+    option1: Tauhan ba siya ni Mayor?
+    option2: Ginagawa ko lang ang trabaho ko.
+    option3: Tulungan mo akong makaalis dito.
+    response1: Lahat ng tao sa gusaling ito ay tauhan ni Mayor. Ang dyanitor, ang
+      guard, pati 'yung nagdedeliver ng tubig. Lahat sila ay mata. At ngayon, nakatingin
+      sila sa'yo.
+    response2: Ang 'trabaho' mo dati ay dapat public service. Ngayon, ang trabaho
+      mo ay pagliligpit ng ebidensya. Huwag mong paghaluin ang dalawa bago maging
+      huli ang lahat.
+    response3: Hindi kita matutulungan na umalis, pero matutulungan kita na makaligtas
+      sa gabing ito. Panatilihing maliit ang terminal window. Huwag tumingin sa mga
+      camera. Kapag nakita mong kumurap ng dalawang beses ang red light, ibig sabihin
+      nire-record ka nila.
+  - hackerStatement: Ito na ang huli kong mensahe bago mag-lockdown ang system ngayong
+      gabi. Bukas, lalapit si Mayor sa desk mo. Titingnan ka niya sa mata at tatanungin
+      kung wala na ang mga files. Babanggitin niya uli ang nanay mo.
+    option1: Natatakot ako sa gagawin niya.
+    option2: Gagawin ko ang dapat kong gawin.
+    option3: Bakit ako ang pinili mong sabihan?
+    response1: Mabuti. Ang takot ay ibig sabihin may konsensya ka pa. Gamitin mo
+      'yan para gumawa ng tamang desisyon kapag tumataas na ang tubig.
+    response2: 'Ang ''dapat mong gawin'' ay pwedeng iligtas ang bayan o iligtas ang
+      sarili mong balat. Tandaan mo lang: kapag pinindot mo ang ''Delete'' sa mga
+      logs na ''yan, magiging ''Kasabwat'' ka na habambuhay.'
+    response3: 'Dahil ikaw ang may hawak ng susi. Ikaw ang pinili ng system na papalit
+      sa akin. Binibigyan kita ng pagkakataon na hindi ko nakuha noon: ang paraan
+      para makaalis nang may malinis na puso.'
 --- !u!1 &1813625791
 GameObject:
   m_ObjectHideFlags: 0
@@ -9808,6 +9819,108 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b91dbfe27fc0d4345bf610f8c8e803ed, type: 3}
+--- !u!1 &2027735807 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a3f88b79d6ae33846aa92ccd5b6dbd29,
+    type: 3}
+  m_PrefabInstance: {fileID: 1190106801}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &2027735808
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027735807}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: dd25264d0e957374dbaa6a78887a60a7, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 8
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2062565947
 GameObject:
   m_ObjectHideFlags: 0
