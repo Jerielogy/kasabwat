@@ -350,7 +350,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 300}
+  m_SizeDelta: {x: 700, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &629288587
 MonoBehaviour:
@@ -462,6 +462,7 @@ GameObject:
   - component: {fileID: 947349843}
   - component: {fileID: 947349842}
   - component: {fileID: 947349841}
+  - component: {fileID: 947349844}
   m_Layer: 5
   m_Name: SkipIntro
   m_TagString: Untagged
@@ -583,6 +584,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947349839}
   m_CullTransparentMesh: 1
+--- !u!114 &947349844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947349839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0dc25de1f70f2e46934f45c979e5a69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalScale: {x: 1, y: 1, z: 1}
+  hoverScale: {x: 1.15, y: 1.15, z: 1.15}
+  lerpSpeed: 10
 --- !u!1 &1313863194
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,11 +814,6 @@ MonoBehaviour:
   - The one person you cannot afford to lose.
   - If saving them meant becoming the person you hate...
   - ...would you even hesitate?
-  - We all like to think we have a conscience.
-  - Until the pen is in our hand and the ink is still wet.
-  - Sacrifice is easy. Living with it is the hard part.
-  - The cycle begins again.
-  - You are part of it.
 --- !u!4 &1579207058
 Transform:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public enum GameState { Prologue, Awakening, Login_User, Login_Pass, Intro, Mailbox, Viewing, Evaluation, PhoneCall, StoryCall, Intrusion, Day3_Breach }
 
@@ -13,6 +12,14 @@ public class KasabwatController : MonoBehaviour
     public HackerConversation hackerComp;
     public bool isReadingNote = false;
 
+    [Header("Day 3 Killer Mechanics")]
+    public GameObject blackFigure;   // The figure that appears at the end
+    public Transform doorEndPoint;  // The location of the locked hallway door
+    public AudioSource radioStatic; // To cut the sound during the final scare
+    private int leakCount = 0;
+    private int deleteCount = 0;
+    private bool isEscaping = false;
+
     private TerminalUI ui;
     private EmailDatabase db;
     private TerminalAudio audioCtrl;
@@ -22,12 +29,16 @@ public class KasabwatController : MonoBehaviour
     public SubtitleManager subManager;
 
     private bool isPhoneCallActive = false;
+
     void Start()
     {
         ui = GetComponent<TerminalUI>();
         db = GetComponent<EmailDatabase>();
         audioCtrl = GetComponent<TerminalAudio>();
         hackerComp = FindFirstObjectByType<HackerConversation>();
+
+        if (blackFigure) blackFigure.SetActive(false); // Ensure he's hidden
+
         LoadDay(1);
         StartCoroutine(StartGameSequence());
     }
@@ -37,6 +48,8 @@ public class KasabwatController : MonoBehaviour
         currentDay = day;
         errors = 0;
         processedToday = 0;
+        leakCount = 0;
+        deleteCount = 0;
         inbox = db.GetDayContent(day);
         ui.SetObjective(inbox.Count);
         if (movement) movement.enabled = false;
@@ -46,12 +59,13 @@ public class KasabwatController : MonoBehaviour
     IEnumerator StartGameSequence()
     {
         currentState = GameState.Prologue;
-        yield return ui.ShowTransitionText("DAY 1: THE COMPLIANCE", 1.5f);
+        string dayText = (currentDay == 3) ? "DAY 3: THE TRAP" : "DAY " + currentDay + ": THE COMPLIANCE";
+        yield return ui.ShowTransitionText(dayText, 1.5f);
         yield return ui.FadeOutBlack(1.5f);
         currentState = GameState.PhoneCall;
         audioCtrl.SetRingtone(true);
         ui.SetOutput("(Telephone ringing... Click the phone to answer.)");
-        ui.SetInstructions("INCOMING: PARE");
+        ui.SetInstructions("INCOMING: FRIEND");
     }
 
     public void HandleInput(string input)
@@ -76,7 +90,8 @@ public class KasabwatController : MonoBehaviour
         else if (currentState == GameState.Viewing)
         {
             if (cmd == "/delete") ProcessEmail(true);
-            else if (cmd == "/keep") ProcessEmail(false);
+            else if (cmd == "/leak" && currentDay == 3) ProcessEmail(false); // Whistleblower choice
+            else if (cmd == "/keep" && currentDay != 3) ProcessEmail(false); // Normal choice
             else if (cmd == "/open") OpenAttachment();
             else if (cmd == "/close") { ui.HideAttachment(); currentState = GameState.Mailbox; UpdateUI(); }
         }
@@ -97,30 +112,109 @@ public class KasabwatController : MonoBehaviour
 
     void ProcessEmail(bool deleteChoice)
     {
-        // 1. HIDE THE ATTACHMENT IMMEDIATELY
-        // This ensures photos/audio stop playing as soon as you make a choice
         ui.HideAttachment();
-
-        // 2. Logic for processing the file
         inbox[selectedEmailIndex].isProcessed = true;
         processedToday++;
 
-        if (inbox[selectedEmailIndex].isSensitive != deleteChoice) errors++;
+        // Track choices for Day 3 Ending
+        if (currentDay == 3)
+        {
+            if (deleteChoice) deleteCount++;
+            else leakCount++;
+        }
+        else
+        {
+            if (inbox[selectedEmailIndex].isSensitive != deleteChoice) errors++;
+        }
 
-        // 3. Check for special events (Intrusion / Day transitions)
         if (currentDay == 2 && processedToday == 8) StartCoroutine(IntrusionSequence());
         else if (currentDay == 2 && processedToday == 15)
         {
             currentState = GameState.Intrusion;
             if (hackerComp) hackerComp.StartBreach();
         }
-        else if (currentDay == 3 && processedToday == 20) StartCoroutine(Day3BreachSequence());
         else
         {
-            // Display the success message on the terminal
             ui.SetOutput("FILE PROCESSED.\n\nTYPE /close TO RETURN TO INBOX.");
             ui.SetObjective(GetPendingCount());
         }
+    }
+
+    void TryLogout()
+    {
+        foreach (var e in inbox)
+        {
+            if (!e.isProcessed)
+            {
+                ui.SetOutput("ACCESS DENIED: PENDING FILES REMAINING.");
+                return;
+            }
+        }
+
+        if (currentDay == 3) StartCoroutine(Day3FinalSequence());
+        else
+        {
+            currentState = GameState.Evaluation;
+            UpdateUI();
+            TriggerEndOfDay();
+        }
+    }
+
+    IEnumerator Day3FinalSequence()
+    {
+        ui.SetOutput("SYSTEM SHUTDOWN...");
+        yield return new WaitForSeconds(2f);
+
+        if (deleteCount >= leakCount)
+        {
+            // MAYOR ENDING
+            yield return ui.FadeInBlack(2f);
+            yield return ui.ShowTransitionText("WALA NA ANG EBIDENSYA.\n\nPERO WALA NA RIN ANG NANAY KO.", 4f);
+            Application.Quit();
+        }
+        else
+        {
+            // WHISTLEBLOWER ENDING
+            currentState = GameState.Day3_Breach;
+            ui.SetOutput("DATA LEAKED. TAKBO.");
+            if (officeLight) officeLight.intensity = 0;
+            if (movement) movement.enabled = true;
+            isEscaping = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    void Update()
+    {
+        if (isEscaping && doorEndPoint != null)
+        {
+            float dist = Vector3.Distance(movement.transform.position, doorEndPoint.position);
+            if (dist < 1.8f)
+            {
+                isEscaping = false;
+                StartCoroutine(TheLockedDoorEnding());
+            }
+        }
+    }
+
+    IEnumerator TheLockedDoorEnding()
+    {
+        movement.enabled = false;
+        ui.SetOutput("THE DOOR IS LOCKED.");
+        yield return new WaitForSeconds(1.5f);
+
+        // INSTANT 180 TURN
+        Vector3 rot = Camera.main.transform.eulerAngles;
+        Camera.main.transform.eulerAngles = new Vector3(rot.x, rot.y + 180f, rot.z);
+
+        if (blackFigure) blackFigure.SetActive(true);
+        if (radioStatic) radioStatic.Stop();
+
+        yield return new WaitForSeconds(0.2f);
+        yield return ui.FadeInBlack(0.1f);
+        yield return new WaitForSeconds(2f);
+        yield return ui.ShowTransitionText("KASABWAT", 5f);
+        Application.Quit();
     }
 
     IEnumerator IntrusionSequence()
@@ -151,7 +245,10 @@ public class KasabwatController : MonoBehaviour
             case GameState.Login_Pass: ui.SetInstructions("ENTER PASSWORD (read sticky note)"); break;
             case GameState.Intro: ui.SetInstructions("PRESS ENTER TO START"); break;
             case GameState.Mailbox: ShowInbox(); ui.SetInstructions("TYPE: /view [number] | /logout"); break;
-            case GameState.Viewing: ui.SetInstructions("TYPE: /keep | /delete | /open | /close"); break;
+            case GameState.Viewing:
+                string prompt = (currentDay == 3) ? "/leak | /delete" : "/keep | /delete";
+                ui.SetInstructions("TYPE: " + prompt + " | /open | /close");
+                break;
             case GameState.Evaluation: ui.SetInstructions("STATION OFFLINE."); break;
         }
     }
@@ -191,44 +288,42 @@ public class KasabwatController : MonoBehaviour
 
     IEnumerator Day1IntroCallSequence()
     {
-        isPhoneCallActive = true; // LOCK
-        string dialogue = "Alvin, Friend: Hey, Paul! You actually made it. Welcome to the 'inner circle.' Look, the terminal looks like a dinosaur, but it’s the most important seat in the entire Municipality. Just keep your head down and clear the backlog. And hey... don't be like Reyes, okay? He started asking questions he shouldn't have, and now nobody knows where he went. Just do it for your Mom. I’ll check on you later.";
+        isPhoneCallActive = true;
+        string dialogue = "Friend: Buddy! Paul! Glad you accepted the offer. Welcome to the municipality's 'inner circle.' Station 8802 might look old, but it's the heart of all the 'Agos' documents. Look, man, your job is simple: just clean up the database. All of Reyes' backlogs—delete them all. And hey... don't be like Reyes, okay? He started asking too many questions, and well, he hasn't been seen since. Just think about your Mom. Her surgery is our priority here. Do your best, man. I’ll check on you later.";
         float length = audioCtrl.GetLength(audioCtrl.friendDay1);
-
         subManager.DisplaySubtitle(dialogue, length);
         audioCtrl.PlayClip(audioCtrl.friendDay1);
-        yield return new WaitForSeconds(audioCtrl.GetLength(audioCtrl.friendDay1));
+        yield return new WaitForSeconds(length);
         ui.SetOutput("SYSTEM READY.\n\nPRESS ANY KEY TO LOGIN");
         currentState = GameState.Awakening;
         UpdateUI();
-        isPhoneCallActive = false; // UNLOCK
+        isPhoneCallActive = false;
     }
 
     IEnumerator Day2PhoneCallSequence()
     {
-        isPhoneCallActive = true; // LOCK
+        isPhoneCallActive = true;
+        string dialogue = "Friend: Paul... do you hear the rain outside? It sounds different this time, man. I've been talking to some people out here, folks from Brgy. Matapang. They say no cement was actually used for the dike. But in the files you're cleaning there, it says 'Optimal' and 'Complete,' doesn't it? Man, be careful. I saw some of the Mayor's men lurking near the Station earlier. It’s like someone is watching you. Just delete what needs to be deleted, don't read them anymore. You might end up like Reyes.";
+        float length = audioCtrl.GetLength(audioCtrl.friendDay2);
+        subManager.DisplaySubtitle(dialogue, length); 
         audioCtrl.PlayClip(audioCtrl.friendDay2);
         yield return new WaitForSeconds(audioCtrl.GetLength(audioCtrl.friendDay2));
         currentState = GameState.Intro;
         UpdateUI();
-        isPhoneCallActive = false; // UNLOCK
+        isPhoneCallActive = false;
     }
 
     IEnumerator ExecuteEvaluationCall()
     {
-        isPhoneCallActive = true; // LOCK
-        string dialogue = (errors > 0)
-        ? "MAYOR: I’m disappointed, Paul. I see files left in the 'Agos' directory. These... 'discrepancies'... they make the office look bad. And when the office looks bad, I have to cut costs. I'd hate for your mother’s hospital fund to be the first thing we cut. Do better tomorrow, Paul. For her sake."
-        : "MAYOR: Paul... I’m looking at the logs. Perfection. That’s what I like about you—you understand how this world works. Your mother is resting comfortably at my private hospital. The surgeons are the best in the province. Keep this up, and your family will never have to worry about a single cent again. Get some rest, son. Tomorrow is a big day for our town.";
-
+        isPhoneCallActive = true;
+        string dialogue = (errors > 0) ? "MAYOR: Paul... I am disappointed by what I see. There are files you didn't erase properly. Some 'discrepancies' were left in my directory. Those mistakes, Paul, could spark trouble for all of us. And when my office runs into trouble, we have to cut costs. It would be a shame for your mother’s private room and medications if we suddenly had to withdraw the budget, wouldn't it? Fix your work tomorrow, Paul. Don't let us both regret it in the end." : "MAYOR: Well done, Paul. I saw your logs tonight. Clean. No issues. That’s what I like about you—you know how to keep your word and show gratitude. Your mother’s last check-up just finished, and my doctors say she’s doing well. Wonderful news, isn't it? Just keep up your loyalty to me, and I'll make sure she has no problems at the hospital. Get some rest for now, Paul. Tomorrow is a big day for our town.";
         float length = audioCtrl.GetLength(pendingEvalClip);
-
-        subManager.DisplaySubtitle(dialogue, length); 
-        
+        subManager.DisplaySubtitle(dialogue, length);
         audioCtrl.PlayClip(pendingEvalClip);
         yield return new WaitForSeconds(length);
         pendingEvalClip = null;
-        isPhoneCallActive = false; // UNLOCK
+        isPhoneCallActive = false;
+
         if (currentDay == 1)
         {
             yield return ui.FadeInBlack(2f);
@@ -248,17 +343,6 @@ public class KasabwatController : MonoBehaviour
             currentState = GameState.Intro;
             UpdateUI();
         }
-    }
-
-    IEnumerator Day3BreachSequence()
-    {
-        currentState = GameState.Day3_Breach;
-        ui.SetOutput("CRITICAL ERROR: SYSTEM TERMINATED.");
-        audioCtrl.PlayClip(audioCtrl.Day2EndingCall);
-        yield return new WaitForSeconds(3f);
-        ui.SetInstructions("STAND UP. ESCAPE NOW.");
-        if (movement) movement.enabled = true;
-        if (officeLight) officeLight.intensity = 0;
     }
 
     IEnumerator Day3FlickerLight()
@@ -287,24 +371,6 @@ public class KasabwatController : MonoBehaviour
         Email e = inbox[selectedEmailIndex];
         if (e.photoAttachment) ui.ShowPhoto(e.photoAttachment);
         if (e.audioAttachment) audioCtrl.PlayClip(e.audioAttachment);
-    }
-
-    void TryLogout()
-    {
-        // 1. Check if any emails are still unprocessed
-        foreach (var e in inbox)
-        {
-            if (!e.isProcessed)
-            {
-                ui.SetOutput("ACCESS DENIED: PENDING FILES REMAINING.");
-                return;
-            }
-        }
-
-        currentState = GameState.Evaluation;
-        UpdateUI();
-
-        TriggerEndOfDay();
     }
 
     int GetPendingCount()

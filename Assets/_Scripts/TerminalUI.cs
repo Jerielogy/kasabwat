@@ -22,10 +22,13 @@ public class TerminalUI : MonoBehaviour
     public GameObject attachmentPanel;
     public Image photoDisplay;
 
+    public PauseManager pauseManager;
+
     // CLEAN START: No more listeners fighting your TerminalInput script
     void Start()
     {
         if (inputField != null) inputField.text = "";
+        if (pauseManager == null) pauseManager = FindFirstObjectByType<PauseManager>();
     }
 
     public void SetOutput(string text) => outputField.text = text;
@@ -54,10 +57,25 @@ public class TerminalUI : MonoBehaviour
 
     public IEnumerator ShowTransitionText(string text, float duration)
     {
+        // 1. I-lock ang pause bago lumabas ang transition text
+        if (pauseManager != null)
+        {
+            pauseManager.canPause = false;
+        }
+
         transitionText.text = text;
         transitionText.gameObject.SetActive(true);
+
+        // Dito hihinto ang laro habang naka-display ang "Day 1" etc.
         yield return new WaitForSeconds(duration);
+
         transitionText.gameObject.SetActive(false);
+
+        // 2. I-unlock ang pause dahil tapos na ang transition
+        if (pauseManager != null)
+        {
+            pauseManager.canPause = true;
+        }
     }
 
     public IEnumerator FadeOutBlack(float duration)

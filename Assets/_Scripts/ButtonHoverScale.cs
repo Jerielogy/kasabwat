@@ -20,7 +20,7 @@ public class ButtonHoverScale : MonoBehaviour, IPointerEnterHandler, IPointerExi
     void Update()
     {
         // Smoothly transition to the target scale every frame
-        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * lerpSpeed);
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.unscaledDeltaTime * lerpSpeed);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -32,6 +32,12 @@ public class ButtonHoverScale : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerExit(PointerEventData eventData)
     {
         // When mouse leaves the button area
+        targetScale = normalScale;
+    }
+    void OnDisable()
+    {
+        // I-reset ang scale sa normal kapag tinago ang menu
+        transform.localScale = normalScale;
         targetScale = normalScale;
     }
 }

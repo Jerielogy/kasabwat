@@ -83,10 +83,10 @@ public class HackerConversation : MonoBehaviour
 
         // Immediately clear the input line for that "encrypted" transition
         hackerDisplayText.text = "REYES: [DECRYPTING RESPONSE...]";
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         hackerDisplayText.text = "REYES: " + hackerResponse;
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(6f);
 
         currentStep++;
         if (currentStep < conversationSteps.Count)

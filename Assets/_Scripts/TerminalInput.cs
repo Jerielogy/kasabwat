@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class TerminalInput : MonoBehaviour
 {
-    public float mouseSensitivity = 70f, interactDistance = 5f;
-    public float smoothSpeed = 10f;
+    public float mouseSensitivity = 30f, interactDistance = 5f;
+    public float smoothSpeed = 8f;
     private float xRot = 0f, yRot = 0f;
     private string currentTyped = "";
     private KasabwatController controller;
